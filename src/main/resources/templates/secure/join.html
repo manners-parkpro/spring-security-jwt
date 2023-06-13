@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Join</title>
+</head>
+<body>
+    <h2>Join Page</h2>
+
+    <form id="form-join" th:action="@{/secure/create-user}" th:method="post">
+        <input type="text" name="email" placeholder="Email" ><br /><br />
+        <input type="password" name="password" placeholder="Password" ><br /><br />
+        <input type="text" name="username" placeholder="Username" ><br /><br />
+        <input type="tel" name="tel" placeholder="Tel" >
+
+        <button type="submit">회원가입</button>
+    </form>
+
+</body>
+</html>
