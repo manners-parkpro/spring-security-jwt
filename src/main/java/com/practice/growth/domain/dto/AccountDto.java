@@ -6,6 +6,7 @@ import com.practice.growth.domain.types.YNType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -38,28 +39,28 @@ public class AccountDto {
 
     public AccountDto(Account a) { this(a, false); }
 
-    public AccountDto(Account a, boolean isPassword) {
+    public AccountDto(Account a, boolean isDetail) {
         this.id = a.getId();
         this.username = a.getUsername();
         this.email = a.getEmail();
 
-        if (a.getEmail() != null) {
+        if (StringUtils.isNotBlank(a.getEmail())) {
             String[] emailArray = email.split("@");
             this.prefixEmail = emailArray[0];
             this.suffixEmail = emailArray[1];
         }
 
         this.tel = a.getTel();
-
-        if (isPassword)
-            this.password = a.getPassword();
-
         this.role = a.getRole();
-        this.activeYn = a.getActiveYn();
-        this.dormantYn = a.getDormantYn();
-        this.deleteYn = a.getDeleteYn();
-        this.lastLoginAt = a.getLastLoginAt();
-        this.createdAt = a.getCreatedAt();
-        this.updatedAt = a.getUpdatedAt();
+
+        if (isDetail) {
+            this.password = a.getPassword();
+            this.activeYn = a.getActiveYn();
+            this.dormantYn = a.getDormantYn();
+            this.deleteYn = a.getDeleteYn();
+            this.lastLoginAt = a.getLastLoginAt();
+            this.createdAt = a.getCreatedAt();
+            this.updatedAt = a.getUpdatedAt();
+        }
     }
 }
