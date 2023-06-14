@@ -1,0 +1,71 @@
+{
+  "name": "practice-grow-up",
+  "homepage": "https://github.com/manners-parkpro/spring-security",
+  "authors": [
+    "Colin <jongsuk.park@lulumedic.com>"
+  ],
+  "description": "spring-security-project",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "install": {
+    "path": {
+      "css": "src/main/resources/static/css",
+      "js": "src/main/resources/static/js"
+    },
+    "sources": {
+      "jquery-ui": [
+        "./bower_components/jquery-ui/themes/start/jquery-ui.css",
+        "./bower_components/jquery-ui/ui/jquery-ui.custom.js"
+      ],
+      "jquery": [
+        "./bower_components/jquery/dist/jquery.min.js"
+      ],
+      "jquery-form": [
+        "./bower_components/jquery-form/dist/jquery.form.min.js"
+      ],
+      "bootstrap": [
+        "./bower_components/bootstrap/dist/css/bootstrap.min.css",
+        "./bower_components/bootstrap/dist/css/bootstrap-theme.min.css",
+        "./bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.eot",
+        "./bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.svg",
+        "./bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.ttf",
+        "./bower_components/bootstrap/dist/fonts/glyphicons-halflings-regular.woff",
+        "./bower_components/bootstrap/dist/js/bootstrap.min.js"
+      ],
+      "moment": [
+        "./bower_components/moment/min/moment.min.js"
+      ],
+      "admin-lte": [
+        "./bower_components/admin-lte/dist/js/adminlte.min.js",
+        "./bower_components/admin-lte/dist/css/adminlte.min.css"
+      ],
+      "iCheck": [
+        "./bower_components/iCheck/icheck.min.js",
+        "./bower_components/iCheck/skins/all.css"
+      ],
+      "font-awesome": [
+        "./bower_components/font-awesome-min/css/font-awesome-min.css"
+      ],
+      "bPopup": [
+        "./bower_components/bPopup/jquery.bpopup.min.js"
+      ]
+    }
+  },
+  "dependencies": {
+    "jquery": "^3.7.0",
+    "bootstrap": "^5.3.0",
+    "jquery-ui": "^1.12.1",
+    "moment": "^2.29.4",
+    "admin-lte": "^3.2.0",
+    "jquery-form": "^4.3.0",
+    "iCheck": "^1.0.3",
+    "bPopup": "bpopup#^0.11.0"
+  }
+}
