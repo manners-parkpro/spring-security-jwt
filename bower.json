@@ -44,11 +44,15 @@
       ],
       "admin-lte": [
         "./bower_components/admin-lte/dist/js/adminlte.min.js",
-        "./bower_components/admin-lte/dist/css/adminlte.min.css"
+        "./bower_components/admin-lte/dist/css/adminlte.min.css",
+        "./bower_components/admin-lte/dist/css/adminlte.css/adminlte.min.css.map"
       ],
       "iCheck": [
         "./bower_components/iCheck/icheck.min.js",
         "./bower_components/iCheck/skins/all.css"
+      ],
+      "icheck-bootstrap": [
+        "./bower_components/icheck-bootstrap/icheck-bootstrap.min.css"
       ],
       "font-awesome": [
         "./bower_components/font-awesome-min/css/font-awesome-min.css"
@@ -66,6 +70,8 @@
     "admin-lte": "^3.2.0",
     "jquery-form": "^4.3.0",
     "iCheck": "^1.0.3",
-    "bPopup": "bpopup#^0.11.0"
+    "bPopup": "bpopup#^0.11.0",
+    "icheck-bootstrap": "^3.0.1",
+    "Font-Awesome": "^6.4.0"
   }
 }
