@@ -17,7 +17,7 @@ public class SecurityConfiguration extends AdminAbstractSecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/resources/**");
+        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/resources/**");
     }
 
     @Bean
@@ -30,7 +30,7 @@ public class SecurityConfiguration extends AdminAbstractSecurityConfiguration {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/secure/**").permitAll()
+                .antMatchers("/**", "/secure/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/admin/**").hasAnyRole("SYSTEM", "ADMIN")
                 .anyRequest().authenticated();
