@@ -2,6 +2,7 @@ package com.practice.growth.controller;
 
 import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.dto.ApiResult;
+import com.practice.growth.domain.entity.Account;
 import com.practice.growth.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
