@@ -36,3 +36,9 @@ spring:
         enabled: true
     main:
       allow-bean-definition-overriding: true
+
+# Google API Console
+google-API:
+  callback : http://localhost:8080/secure/login/oauth-google/callback
+  client-id: 49125488226-omd7fa2inu9h54fk2607h89224u4rhrc.apps.googleusercontent.com
+  client-key: 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
