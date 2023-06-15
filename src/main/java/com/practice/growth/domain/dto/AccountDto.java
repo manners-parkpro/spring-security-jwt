@@ -2,6 +2,7 @@ package com.practice.growth.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.practice.growth.domain.entity.Account;
+import com.practice.growth.domain.types.ProviderType;
 import com.practice.growth.domain.types.YNType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,7 @@ import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,6 +26,8 @@ public class AccountDto {
     private String suffixEmail;
     private String password;
     private String role;
+    private ProviderType provider;
+    private String providerId;
     private YNType activeYn;
     private YNType dormantYn;
     private YNType deleteYn;
@@ -52,6 +56,9 @@ public class AccountDto {
 
         this.tel = a.getTel();
         this.role = a.getRole();
+        this.provider = a.getProvider();
+        if (StringUtils.isNotBlank(a.getProviderId()))
+            this.providerId = a.getProviderId();
 
         if (isDetail) {
             this.password = a.getPassword();

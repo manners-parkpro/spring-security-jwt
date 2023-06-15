@@ -36,3 +36,27 @@ spring:
         enabled: true
     main:
       allow-bean-definition-overriding: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            redirect-uri: http://localhost:8080/login/oauth2/code/google #Oauth2 라이브러리를 사용한다면 고정 URI
+            client-id: 49125488226-omd7fa2inu9h54fk2607h89224u4rhrc.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - email
+              - profile
+
+          naver:
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver #Oauth2 라이브러리를 사용한다면 고정 URI
+            client-id:
+            client-secret:
+            client-name: Naver
+            authorization-grant-type: authorization_code
+            scope:
+              - name
+              - email
+
+aes256:
+  iv-key: AES256ENCRYPTKEY

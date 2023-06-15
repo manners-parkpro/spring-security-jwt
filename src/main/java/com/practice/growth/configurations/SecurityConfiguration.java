@@ -1,5 +1,7 @@
 package com.practice.growth.configurations;
 
+import com.practice.growth.service.Oauth2UserDetailsServiceImpl;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -12,8 +14,11 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @EnableWebSecurity // Spring Security FilterChain에 등록이 된다.
+@RequiredArgsConstructor
 //@EnableMethodSecurity(securedEnabled = true) @secured 애노테이션 활성화, prePostEnabled = preAuthorize 애노테이션 활성화
 public class SecurityConfiguration extends AdminAbstractSecurityConfiguration {
+
+    private final Oauth2UserDetailsServiceImpl oauth2UserDetailsService;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -40,6 +45,17 @@ public class SecurityConfiguration extends AdminAbstractSecurityConfiguration {
             .successHandler(successHandler())
             .failureHandler(failureHandler())
             .permitAll();
+
+        /**
+         * 1. oauth code 받기
+         * 2. accessToken 받기 (권한)
+         * 3. 사용자 정보 Get
+         * 4. 정보를 토대로 회원가입 OR 로그인
+         */
+        http.oauth2Login()
+            .loginPage("/secure/login")
+            .userInfoEndpoint() // oauth2 로그인 후 정보를 Get (AccessToken + User 정보)
+            .userService(oauth2UserDetailsService);
 
         return http.build();
     }
