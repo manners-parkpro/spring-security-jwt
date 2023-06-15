@@ -17,7 +17,7 @@ public class SecurityConfiguration extends AdminAbstractSecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/resources/**");
+        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/js/**", "/css/**", "/fonts/**", "/images/**", "/favicon.ico");
     }
 
     @Bean
@@ -30,17 +30,16 @@ public class SecurityConfiguration extends AdminAbstractSecurityConfiguration {
         http.csrf().disable();
 
         http.authorizeRequests()
-                .antMatchers("/**", "/secure/**").permitAll()
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/admin/**").hasAnyRole("SYSTEM", "ADMIN")
+                .antMatchers("/secure/**").permitAll()
+                .antMatchers("/system/**").hasRole("SYSTEM")
                 .anyRequest().authenticated();
 
         http.formLogin()
             .loginPage("/secure/login")
             .loginProcessingUrl("/secure/login-process") // 해당 주소가 호출이 되면 Security가 낚아채서 로그인 Process를 진행한다.
-            //.successHandler(successHandler())
-            //.failureHandler(failureHandler());
-            .defaultSuccessUrl("/");
+            .successHandler(successHandler())
+            .failureHandler(failureHandler())
+            .permitAll();
 
         return http.build();
     }

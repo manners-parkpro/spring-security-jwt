@@ -2,6 +2,9 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Login</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" th:href="@{/img/favicon.ico}"/>
@@ -14,7 +17,7 @@
     <div class="login-box">
         <div class="card card-outline card-primary">
             <div class="card-header text-center">
-                <a href="javascript:;" class="h1">Hello</a>
+                <a href="javascript:;" class="h1">Admin</a>
             </div>
 
             <div class="card-body">
@@ -68,7 +71,7 @@
                 </p>
 
                 <p class="mb-0">
-                    <a th:href="@{/secure/join}" class="text-center">Register a new membership</a>
+                    <a th:href="@{/secure/register}" class="text-center">Register a new membership</a>
                 </p>
             </div>
         </div>

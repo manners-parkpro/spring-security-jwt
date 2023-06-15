@@ -3,14 +3,12 @@ package com.practice.growth.controller;
 import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.dto.ApiResult;
 import com.practice.growth.service.AccountService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @Log4j2
 @Controller
@@ -25,9 +23,9 @@ public class SecureController {
         return "secure/login";
     }
 
-    @GetMapping("join")
-    public String join() {
-        return "secure/join";
+    @GetMapping("register")
+    public String register() {
+        return "secure/register";
     }
 
     @PostMapping("create-user")
