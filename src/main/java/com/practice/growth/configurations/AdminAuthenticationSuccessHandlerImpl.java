@@ -24,7 +24,13 @@ public class AdminAuthenticationSuccessHandlerImpl extends SimpleUrlAuthenticati
         // DefaultSavedRequest 는 현재 클라이언트의 요청과정 중에 포함된 쿠키, 헤더, 파라미터 값들을 추출하여 보관하는 역할을 합니다.
         RequestCache requestCache = new HttpSessionRequestCache();
         SavedRequest savedRequest = requestCache.getRequest(request, response);
-        String redirectURL = savedRequest.getRedirectUrl();
+
+        String redirectURL;
+
+        if (savedRequest == null)
+            redirectURL = "/";
+        else
+            redirectURL = savedRequest.getRedirectUrl();
 
         response.sendRedirect(redirectURL);
     }
