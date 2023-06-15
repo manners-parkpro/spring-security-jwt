@@ -3,7 +3,6 @@ package com.practice.growth.service;
 import com.practice.growth.authentication.PrincipalDetails;
 import com.practice.growth.domain.entity.Account;
 import com.practice.growth.exception.NotFoundException;
-import com.practice.growth.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -27,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Account account;
 
         try {
-            account = service.findByEmail(username);
+            account = service.findByUsername(username);
         } catch (NotFoundException e) {
             String msg = "User Not found : " + username;
             log.error(msg);
