@@ -17,7 +17,7 @@ public class SecurityConfiguration extends AdminAbstractSecurityConfiguration {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/js/**", "/css/**", "/fonts/**", "/images/**", "/favicon.ico");
+        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/js/**", "/css/**", "/fonts/**", "/images/**", "/favicon.*", "/*/icon-*");
     }
 
     @Bean
