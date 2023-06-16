@@ -50,7 +50,7 @@ public class AccountService {
         if (StringUtils.isNotBlank(dto.getTel()))
             account.setTel(dto.getTel());
 
-        account.setRole(StringUtils.isBlank(dto.getRole()) ? "ROLE_USER" : dto.getRole());
+        account.setRoles(StringUtils.isBlank(dto.getRoles()) ? "ROLE_USER" : dto.getRoles());
         account.setProvider(dto.getProvider() == null ? ProviderType.WEB : dto.getProvider());
 
         repository.save(account);

@@ -6,9 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @Setter
@@ -29,7 +33,7 @@ public class Account extends BaseEntity {
     private String tel;
     private String password;
     @Column(length = 50)
-    private String role; // 나중에는 연관관계 필요
+    private String roles; // 나중에는 연관관계 필요
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private ProviderType provider;
@@ -44,4 +48,12 @@ public class Account extends BaseEntity {
     @Column(length = 1, columnDefinition = "char(1) default 'N'")
     private YNType deleteYn;
     private LocalDateTime lastLoginAt;
+
+    // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
+    public List<String> getRoleList() {
+        if (this.roles.length() > 0)
+            return Arrays.asList(this.roles.split(","));
+
+        return new ArrayList<>();
+    }
 }
