@@ -45,8 +45,7 @@
       ],
       "admin-lte": [
         "./bower_components/admin-lte/dist/js/adminlte.min.js",
-        "./bower_components/admin-lte/dist/css/adminlte.min.css",
-        "./bower_components/admin-lte/dist/css/adminlte.css/adminlte.min.css.map"
+        "./bower_components/admin-lte/dist/css/adminlte.min.css"
       ],
       "iCheck": [
         "./bower_components/iCheck/icheck.min.js",
