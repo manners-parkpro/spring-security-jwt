@@ -34,7 +34,7 @@ public class Oauth2UserDetailsServiceImpl extends DefaultOAuth2UserService {
     // 함수 종료 시 @AuthenticationPrincipal 애노테이션이 만들어 진다.
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        log.info("oauth loadUser");
+        log.info("OAuth loadUser");
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
         Account account = createOAuthUser(findOAuthAccount(oAuth2User, userRequest.getClientRegistration().getRegistrationId()));
