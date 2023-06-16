@@ -17,7 +17,8 @@
   "install": {
     "path": {
       "css": "src/main/resources/static/css",
-      "js": "src/main/resources/static/js"
+      "js": "src/main/resources/static/js",
+      "fonts": "src/main/resources/static/fonts"
     },
     "sources": {
       "jquery-ui": [
@@ -72,6 +73,7 @@
     "iCheck": "^1.0.3",
     "bPopup": "bpopup#^0.11.0",
     "icheck-bootstrap": "^3.0.1",
-    "Font-Awesome": "^6.4.0"
+    "Font-Awesome": "^6.4.0",
+    "ionicons": "^7.1.2"
   }
 }
