@@ -1,6 +1,6 @@
 package com.practice.growth.service;
 
-import com.practice.growth.authentication.PrincipalDetails;
+import com.practice.growth.domain.auth.PrincipalDetails;
 import com.practice.growth.domain.entity.Account;
 import com.practice.growth.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
