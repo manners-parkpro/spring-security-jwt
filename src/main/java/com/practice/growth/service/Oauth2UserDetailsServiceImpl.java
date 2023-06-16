@@ -1,13 +1,15 @@
 package com.practice.growth.service;
 
 import com.practice.growth.authentication.PrincipalDetails;
+import com.practice.growth.domain.dto.GoogleAccountDto;
+import com.practice.growth.domain.dto.NaverAccountDto;
+import com.practice.growth.domain.dto.OAuthAccount;
 import com.practice.growth.domain.entity.Account;
 import com.practice.growth.domain.types.ProviderType;
 import com.practice.growth.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 
 @Log4j2
@@ -34,36 +37,46 @@ public class Oauth2UserDetailsServiceImpl extends DefaultOAuth2UserService {
         log.info("oauth loadUser");
 
         OAuth2User oAuth2User = super.loadUser(userRequest);
-        Account account = createOAuthUser(userRequest, oAuth2User);
+        Account account = createOAuthUser(findOAuthAccount(oAuth2User, userRequest.getClientRegistration().getRegistrationId()));
+
         return new PrincipalDetails(account, oAuth2User.getAttributes());
     }
 
     @Transactional
-    public Account createOAuthUser(OAuth2UserRequest userRequest, OAuth2User oAuth2User) {
-        String providerType = userRequest.getClientRegistration().getRegistrationId();
-        String provider = userRequest.getClientRegistration().getClientId();
-        String providerId = oAuth2User.getAttribute("sub");
-
+    public Account createOAuthUser(OAuthAccount oAuthAccount) {
+        String provider = oAuthAccount.getProvider();
+        String providerId = oAuthAccount.getProviderId();
 
         Account account;
         Optional<Account> optAccount = repository.findByProviderId(providerId);
         if (optAccount.isEmpty()) {
             account = new Account();
-            account.setEmail(oAuth2User.getAttribute("email"));
-            account.setUsername(provider + "_" + providerId);
+            account.setEmail(oAuthAccount.getEmail());
+            account.setUsername(oAuthAccount.getName());
             account.setRole("ROLE_USER");
 
-            if (ProviderType.GOOGLE.getDesc().equals(providerType))
+            if (ProviderType.GOOGLE.getDesc().equals(providerId))
                 account.setProvider(ProviderType.GOOGLE);
             else
                 account.setProvider(ProviderType.NAVER);
 
-            account.setProviderId(oAuth2User.getAttribute("sub"));
-        } else {
+            account.setProviderId(provider + "_" + providerId);
+        } else
             account = optAccount.get();
-            account.setLastLoginAt(LocalDateTime.now());
-        }
+
+        account.setLastLoginAt(LocalDateTime.now());
 
         return repository.save(account);
+    }
+
+    private OAuthAccount findOAuthAccount(OAuth2User oAuth2User, String providerType) {
+        OAuthAccount oAuthAccount;
+
+        if (ProviderType.GOOGLE.getDesc().equals(providerType))
+            oAuthAccount = new GoogleAccountDto(oAuth2User.getAttributes());
+        else
+            oAuthAccount = new NaverAccountDto((Map<String, Object>) oAuth2User.getAttributes().get("response"));
+
+        return oAuthAccount;
     }
 }

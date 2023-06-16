@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Account account;
 
         try {
-            account = service.findByUsername(username);
+            account = service.findByEmail(username);
         } catch (NotFoundException e) {
             String msg = "User Not found : " + username;
             log.error(msg);
