@@ -53,7 +53,7 @@ public class Oauth2UserDetailsServiceImpl extends DefaultOAuth2UserService {
             account = new Account();
             account.setEmail(oAuthAccount.getEmail());
             account.setUsername(oAuthAccount.getName());
-            account.setRole("ROLE_USER");
+            account.setRoles("ROLE_USER");
 
             if (ProviderType.GOOGLE.getDesc().equals(providerId))
                 account.setProvider(ProviderType.GOOGLE);

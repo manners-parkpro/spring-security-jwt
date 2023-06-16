@@ -25,7 +25,7 @@ public class AccountDto {
     private String prefixEmail;
     private String suffixEmail;
     private String password;
-    private String role;
+    private String roles; // List로 변경해야됨
     private ProviderType provider;
     private String providerId;
     private YNType activeYn;
@@ -55,7 +55,7 @@ public class AccountDto {
         }
 
         this.tel = a.getTel();
-        this.role = a.getRole();
+        this.roles = a.getRoles();
         this.provider = a.getProvider();
         if (StringUtils.isNotBlank(a.getProviderId()))
             this.providerId = a.getProviderId();
