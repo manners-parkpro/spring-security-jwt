@@ -28,11 +28,11 @@ public class Account extends BaseEntity {
     @Column(length = 50)
     private String tel;
     private String password;
+    @Column(length = 50)
     private String role; // 나중에는 연관관계 필요
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private ProviderType provider;
-    @Column(length = 50)
     private String providerId;
     @Enumerated(EnumType.STRING)
     @Column(length = 1, columnDefinition = "char(1) default 'Y'")
