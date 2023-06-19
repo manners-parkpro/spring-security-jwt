@@ -66,4 +66,4 @@ spring:
             user-name-attribute: response #회원정보 데이터 Key (JSON)
 
 jwt:
-  secret-key: AES256ENCRYPTKEY
+  secret-key: e54ebeb6b255986db6f11cc6aac246a926d62e3ff09dfef2634801c5de108080412ea610721e3e64f520313774a706ea155366bb62bdcc90242e442198527ea0

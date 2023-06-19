@@ -21,9 +21,9 @@
             </div>
 
             <div class="card-body">
-                <p class="login-box-msg">Sign in to start your JWT Token</p>
+                <p class="login-box-msg">Sign in to start your session</p>
 
-                <form id="form-login" th:onsubmit="false;">
+                <form id="form-login" th:action="@{/secure/login-process}" th:method="post">
                     <div class="input-group mb-3">
                         <input type="email" class="form-control" name="username" placeholder="Email">
                         <div class="input-group-append">
