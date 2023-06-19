@@ -19,11 +19,6 @@ public abstract class AdminAbstractSecurityConfiguration {
     private final TokenProvider tokenProvider;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    @Bean
     public AdminAuthenticationSuccessHandlerImpl successHandler() {
         return new AdminAuthenticationSuccessHandlerImpl();
     }
