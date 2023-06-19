@@ -9,7 +9,6 @@ import com.practice.growth.domain.types.ProviderType;
 import com.practice.growth.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -27,8 +26,6 @@ import java.util.Optional;
 public class Oauth2UserDetailsServiceImpl extends DefaultOAuth2UserService {
 
     private final AccountRepository repository;
-    @Value("${aes256.iv-key}")
-    private String ivKey;
 
     // Oauth2 Login 후처리 되는 되는 Method
     // 함수 종료 시 @AuthenticationPrincipal 애노테이션이 만들어 진다.
