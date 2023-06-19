@@ -5,6 +5,7 @@ import com.practice.growth.domain.types.YNType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.DynamicInsert;
 import org.springframework.util.CollectionUtils;
 
@@ -51,7 +52,7 @@ public class Account extends BaseEntity {
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
     public List<String> getRoleList() {
-        if (this.roles.length() > 0)
+        if (StringUtils.isNotBlank(this.roles))
             return Arrays.asList(this.roles.split(","));
 
         return new ArrayList<>();
