@@ -23,6 +23,7 @@ import java.util.Optional;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Deprecated
 public class Oauth2UserDetailsServiceImpl extends DefaultOAuth2UserService {
 
     private final AccountRepository repository;

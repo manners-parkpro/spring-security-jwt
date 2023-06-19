@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 @Log4j2
 @Service
 @RequiredArgsConstructor
+@Deprecated
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final AccountService service;
