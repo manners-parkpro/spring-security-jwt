@@ -23,12 +23,12 @@ import static org.springframework.security.core.authority.AuthorityUtils.createA
 
 @Log4j2
 @Component
-public class TokenProvider implements InitializingBean {
+public class JwtProvider implements InitializingBean {
 
     private final String secret;
     private Key key;
 
-    public TokenProvider(@Value("${jwt.secret-key}") String secret) {
+    public JwtProvider(@Value("${jwt.secret-key}") String secret) {
         this.secret = secret;
     }
 

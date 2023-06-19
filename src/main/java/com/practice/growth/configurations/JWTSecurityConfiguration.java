@@ -1,7 +1,7 @@
 package com.practice.growth.configurations;
 
 import com.practice.growth.filter.JwtFilter;
-import com.practice.growth.provider.TokenProvider;
+import com.practice.growth.provider.JwtProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,11 +18,11 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 //@EnableMethodSecurity(securedEnabled = true) @secured 애노테이션 활성화, prePostEnabled = preAuthorize 애노테이션 활성화
 public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration {
 
-    private final TokenProvider tokenProvider;
+    private final JwtProvider jwtProvider;
 
-    public JWTSecurityConfiguration(TokenProvider tokenProvider) {
-        super(tokenProvider); // super() 메소드는 부모 클래스의 생성자를 호출할 때 사용됩니다.
-        this.tokenProvider = tokenProvider;
+    public JWTSecurityConfiguration(JwtProvider jwtProvider) {
+        super(jwtProvider); // super() 메소드는 부모 클래스의 생성자를 호출할 때 사용됩니다.
+        this.jwtProvider = jwtProvider;
     }
 
     @Bean
@@ -38,7 +38,7 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
 
         // JWT 필수 Setting
         http.addFilterBefore(characterEncodingFilter, CsrfFilter.class) // Csrf : 사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위(수정, 삭제, 등록 등)를 특정 웹사이트에 요청하게 하는 공격
-            .addFilterBefore(new JwtFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
 
         http.csrf().disable()
                 .formLogin().disable()
