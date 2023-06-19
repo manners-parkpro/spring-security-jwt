@@ -1,9 +1,8 @@
 package com.practice.growth.filter;
 
-import com.practice.growth.provider.TokenProvider;
+import com.practice.growth.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -17,7 +16,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
 
-    private final TokenProvider tokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -28,9 +27,9 @@ public class JwtFilter extends OncePerRequestFilter {
         HttpServletResponse servletResponse = response;
          **/
 
-        String accessToken = tokenProvider.resolveToken(request);
-        if (tokenProvider.validateToken(accessToken)) {
-            Authentication authentication = tokenProvider.getAuthentication(accessToken);
+        String accessToken = jwtProvider.resolveToken(request);
+        if (jwtProvider.validateToken(accessToken)) {
+            Authentication authentication = jwtProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 

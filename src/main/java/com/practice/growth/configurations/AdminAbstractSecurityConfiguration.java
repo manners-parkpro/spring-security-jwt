@@ -1,13 +1,11 @@
 package com.practice.growth.configurations;
 
 import com.practice.growth.filter.JwtFilter;
-import com.practice.growth.provider.TokenProvider;
+import com.practice.growth.provider.JwtProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
@@ -16,7 +14,7 @@ import org.springframework.web.filter.CorsFilter;
 @RequiredArgsConstructor
 public abstract class AdminAbstractSecurityConfiguration {
 
-    private final TokenProvider tokenProvider;
+    private final JwtProvider jwtProvider;
 
     @Bean
     public AdminAuthenticationSuccessHandlerImpl successHandler() {
@@ -46,7 +44,7 @@ public abstract class AdminAbstractSecurityConfiguration {
     public FilterRegistrationBean<JwtFilter> jwtFilterFilterRegistrationBean() {
         // 필터설정
         log.info("jwtFilterFilterRegistrationBean");
-        FilterRegistrationBean<JwtFilter> bean = new FilterRegistrationBean<>(new JwtFilter(tokenProvider));
+        FilterRegistrationBean<JwtFilter> bean = new FilterRegistrationBean<>(new JwtFilter(jwtProvider));
         bean.addUrlPatterns("/*");
         bean.setOrder(0);
 
