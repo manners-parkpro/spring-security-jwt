@@ -39,7 +39,7 @@ public class AccountService {
         if (dto == null)
             throw new RequiredParamNonException("RequiredParamNonException");
 
-        if (repository.countByUsername(dto.getEmail()) > 0 || repository.countByEmail(dto.getUsername()) > 0)
+        if (repository.countByUsernameIgnoreCase(dto.getUsername()) > 0 || repository.countByEmail(dto.getEmail()) > 0)
             throw new AlreadyEntity("AlreadyEntity");
 
         Account account = new Account();

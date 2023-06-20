@@ -5,6 +5,7 @@ package com.practice.growth.domain.auth;
 // Object => Authentication => User정보가 있어야 됨.
 // User Object = UserDetails 객체
 
+import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.entity.Account;
 import com.practice.growth.domain.types.YNType;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,10 @@ public class PrincipalDetails implements UserDetails, OAuth2User {
     // 일반 Email 로그인
     public PrincipalDetails(Account account) {
         this.account = account;
+    }
+
+    public Account getAccount() {
+        return account;
     }
 
     // OAuth2 로그인

@@ -22,7 +22,7 @@
         </div>
         <div class="card-body">
             <p class="login-box-msg">Register a new membership</p>
-            <form id="form-register" th:action="@{/secure/create-user}" th:method="post">
+            <form id="form-register">
                 <div class="input-group mb-3">
                     <input type="text" class="form-control" name="username" placeholder="Full name">
                     <div class="input-group-append">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="tel" placeholder="Tel Number">
+                    <input type="text" class="form-control only-number" name="tel" placeholder="Tel Number">
                     <div class="input-group-append">
                         <div class="input-group-text">
                             <span class="fas fa-lock"></span>
@@ -66,11 +66,12 @@
                     </div>
 
                     <div class="col-4">
-                        <button type="submit" class="btn btn-primary btn-block">Register</button>
+                        <button type="button" class="btn btn-primary btn-block" id="register-user">Register</button>
                     </div>
 
                 </div>
             </form>
+            <!--
             <div class="social-auth-links text-center">
                 <a href="#" class="btn btn-block btn-primary">
                     <i class="fab fa-facebook mr-2"></i>
@@ -81,10 +82,52 @@
                     Sign up using Google+
                 </a>
             </div>
+            -->
             <a th:href="@{/secure/login}" class="text-center">I already have a membership</a>
         </div>
 
     </div>
 </div>
+
+<script src="/static/js/common/util.js" th:src="@{/js/common/util.js}"></script>
+<script src="/static/js/jquery/jquery.min.js" th:src="@{/js/jquery/jquery.min.js}"></script>
+
+<script th:inline="javascript">
+    var ready = function() {
+        onlyNumberKeyEvent({className: "only-number"});
+    }
+
+    var registerUser = function(e) {
+        e.preventDefault();
+        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+
+         var data = {
+            "username": $('input[name=username]').val(),
+            "email": $('input[name=email]').val(),
+            "password": $('input[name=password]').val(),
+            "tel": $('input[name=tel]').val().replaceAll(regExp, '')
+        };
+
+        $.ajax({
+            url : "/create-user",
+            type : "POST",
+            dataType: 'json',
+            contentType: 'application/json',
+            data : JSON.stringify(data)
+        }).done(function(result) {
+            console.log(result);
+            if (result.code === 200)
+                location.href = 'login';
+            else
+                alert(result.message);
+
+        }).fail(function (XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+            console.log("$.Ajax 통신 실패.");
+        }).always(function () {});
+    }
+
+    $(document).ready(ready)
+        .on('click', '#register-user', registerUser);
+</script>
 </body>
 </html>

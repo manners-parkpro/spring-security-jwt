@@ -2,18 +2,23 @@ package com.practice.growth.controller;
 
 import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.dto.ApiResult;
+import com.practice.growth.domain.dto.JwtTokenDto;
+import com.practice.growth.exception.RequiredParamNonException;
+import com.practice.growth.provider.CustomAuthenticationProvider;
+import com.practice.growth.provider.JwtProvider;
 import com.practice.growth.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Log4j2
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/secure/")
 public class SecureController {
 
     private final AccountService accountService;
@@ -29,7 +34,7 @@ public class SecureController {
     }
 
     @PostMapping("create-user")
-    public String createUser(AccountDto dto) {
+    public @ResponseBody ApiResult<Long> createUser(@RequestBody AccountDto dto) {
         ApiResult<Long> result = new ApiResult<>(ApiResult.RESULT_CODE_OK);
 
         try {
@@ -38,8 +43,9 @@ public class SecureController {
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             result.setCode(ApiResult.RESULT_CODE_ERROR);
+            result.setMessage(e.getMessage());
         }
 
-        return "redirect:/secure/login";
+        return result;
     }
 }
