@@ -27,20 +27,18 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String userPw = (String) authentication.getCredentials();
         PrincipalDetails userDetails = (PrincipalDetails) userDetailsService.loadUserByUsername(username);
 
-        if (userDetails == null || !username.equals(userDetails.getUsername()) || !passwordEncoder.matches(userPw, userDetails.getPassword())) {
+        if (userDetails == null || !username.equals(userDetails.getUsername()) || !passwordEncoder.matches(userPw, userDetails.getPassword()))
             throw new BadCredentialsException(username); //아이디, 비밀번호 불일치
-        } else if(!userDetails.isEnabled()) {
+        else if(!userDetails.isEnabled())
             throw new DisabledException(username); //계정 비활성화
-        } else if(!userDetails.isAccountNonLocked()) {
+        else if(!userDetails.isAccountNonLocked())
             throw new LockedException(username); //계정 잠김
-        } else if (!userDetails.isAccountNonExpired()) {
+        else if (!userDetails.isAccountNonExpired())
             throw new AccountExpiredException(username); //계정 만료
-        } else if (!userDetails.isCredentialsNonExpired()) {
+        else if (!userDetails.isCredentialsNonExpired())
             throw new CredentialsExpiredException(username); //비밀번호 만료
-        }
 
-        Authentication auth = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-        return auth;
+        return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 
     //반환 객체 타입 검사
