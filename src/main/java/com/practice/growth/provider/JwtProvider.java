@@ -1,6 +1,6 @@
 package com.practice.growth.provider;
 
-import com.practice.growth.utils.JwtUtils;
+import com.practice.growth.domain.dto.JwtTokenDto;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -15,10 +15,10 @@ import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Key;
-import java.util.Collection;
 import java.util.Date;
+import java.util.stream.Collectors;
 
-import static com.practice.growth.utils.JwtUtils.AUTHORIZATION_HEADER;
+import static com.practice.growth.utils.JwtUtils.*;
 import static org.springframework.security.core.authority.AuthorityUtils.createAuthorityList;
 
 @Log4j2
@@ -75,29 +75,32 @@ public class JwtProvider implements InitializingBean {
         return false;
     }
 
-    /**
-     * Authentication 기반 토큰 생성 메소드.
-     * {@link #generateToken(String, Collection)}
-     * @param authentication
-     * @return JWT(String)
-     */
-    public String generateToken(Authentication authentication) {
-        return generateToken(authentication.getName(), authentication.getAuthorities());
-    }
+    public JwtTokenDto generateToken(Authentication authentication) {
+        String authorities = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
-    /**
-     * Username 및 Authorities 기반 토큰 생성 메소드.
-     * @param username
-     * @param authorities
-     * @return JWT(String)
-     */
-    public String generateToken(String username, Collection<? extends GrantedAuthority> authorities) {
-        return Jwts.builder()
-                .setSubject(username)
-                .claim("role", authorities.stream().findFirst().get().toString())
-                .setExpiration(getExpireDate())
-                .signWith(SignatureAlgorithm.HS256, secret)
+        // Access Token 생성
+        String accessToken = Jwts.builder()
+                .setSubject(authentication.getName()) // payload "sub": "name"
+                .claim(AUTHORITIES_KEY, authorities) // payload "auth": "ROLE_USER"
+                .setExpiration(getExpireDate()) // payload "exp": 1516239022 (예시)
+                .signWith(key, SignatureAlgorithm.HS512) // header "alg": "HS512"
                 .compact();
+
+        // Refresh Token 생성
+        String refreshToken = Jwts.builder()
+                .setExpiration(getRefreshExpireDate())
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
+
+        return JwtTokenDto.builder()
+                .grantType(BEARER_TYPE)
+                .username(authentication.getName())
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .accessTokenExpireDate(getExpireDate().getTime())
+                .build();
     }
 
     /**
@@ -123,11 +126,15 @@ public class JwtProvider implements InitializingBean {
                 .parseClaimsJws(accessToken)
                 .getBody()
                 .get("role", String.class);
-
     }
 
     private Date getExpireDate() {
         Date now = new Date();
-        return new Date(now.getTime() + JwtUtils.accessTokenValidMillisecond);
+        return new Date(now.getTime() + ACCESS_TOKEN_EXPIRE_TIME);
+    }
+
+    private Date getRefreshExpireDate() {
+        Date now = new Date();
+        return new Date(now.getTime() + REFRESH_TOKEN_EXPIRE_TIME);
     }
 }

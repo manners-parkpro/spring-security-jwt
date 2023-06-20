@@ -1,29 +1,32 @@
 package com.practice.growth.configurations;
 
-import com.practice.growth.filter.JwtFilter;
-import com.practice.growth.provider.JwtProvider;
+import com.practice.growth.filter.JwtAuthenticationFilter;
+import com.practice.growth.filter.JwtAuthorizationFilter;
+import com.practice.growth.handler.JwtAccessDeniedHandler;
+import com.practice.growth.handler.JwtAuthenticationEntryPoint;
+import com.practice.growth.repository.AccountRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
 @Configuration
 @EnableWebSecurity // Spring Security FilterChain에 등록이 된다.
 //@EnableMethodSecurity(securedEnabled = true) @secured 애노테이션 활성화, prePostEnabled = preAuthorize 애노테이션 활성화
+@RequiredArgsConstructor
 public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration {
 
-    private final JwtProvider jwtProvider;
-
-    public JWTSecurityConfiguration(JwtProvider jwtProvider) {
-        super(jwtProvider); // super() 메소드는 부모 클래스의 생성자를 호출할 때 사용됩니다.
-        this.jwtProvider = jwtProvider;
-    }
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAccessDeniedHandler accessDeniedHandler;
+    private final AccountRepository accountRepository;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -37,16 +40,20 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
         characterEncodingFilter.setForceEncoding(true);
 
         // JWT 필수 Setting
-        http.addFilterBefore(characterEncodingFilter, CsrfFilter.class) // Csrf : 사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위(수정, 삭제, 등록 등)를 특정 웹사이트에 요청하게 하는 공격
-            .addFilterBefore(new JwtFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class);
-
-        http.csrf().disable()
+        http.csrf().disable() // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .formLogin().disable()
                 .httpBasic().disable(); // http basic 은 Header에 ID,PW를 들고 다닌다. ( 암호화가 안되며 탈취되기 때문에 사용 X / https 는 암호화 가능 )
 
+        http
+            .exceptionHandling()
+            .authenticationEntryPoint(authenticationEntryPoint)
+            .accessDeniedHandler(accessDeniedHandler)
+            .and()
+            .addFilterBefore(characterEncodingFilter, CsrfFilter.class); // Csrf : 사용자가 자신의 의지와는 무관하게 공격자가 의도한 행위(수정, 삭제, 등록 등)를 특정 웹사이트에 요청하게 하는 공격
+
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.addFilter(corsFilter()); // Security Filter에 corsFilter 등록
+        http.apply(new JwtCustomFilter()); // Security Filter에 corsFilter 등록
         // JWT 필수 Setting End.
 
         http.authorizeRequests()
@@ -55,5 +62,18 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
                 .anyRequest().permitAll();
 
         return http.build();
+    }
+
+
+    public class JwtCustomFilter extends AbstractHttpConfigurer<JwtCustomFilter, HttpSecurity> {
+
+        @Override
+        public void configure(HttpSecurity http) throws Exception {
+            AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+
+            http.addFilter(corsFilter())
+                .addFilter(new JwtAuthenticationFilter(authenticationManager))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager, accountRepository));
+        }
     }
 }

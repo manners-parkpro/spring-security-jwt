@@ -1,6 +1,7 @@
 package com.practice.growth.service;
 
 import com.practice.growth.domain.auth.PrincipalDetails;
+import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.dto.GoogleAccountDto;
 import com.practice.growth.domain.dto.NaverAccountDto;
 import com.practice.growth.domain.dto.OAuthAccount;

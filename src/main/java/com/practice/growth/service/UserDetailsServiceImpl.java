@@ -1,6 +1,7 @@
 package com.practice.growth.service;
 
 import com.practice.growth.domain.auth.PrincipalDetails;
+import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.entity.Account;
 import com.practice.growth.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Account account;
 
         try {
-            account = service.findByEmail(username);
+            account = service.findByUsername(username);
         } catch (NotFoundException e) {
             String msg = "User Not found : " + username;
             log.error(msg);
