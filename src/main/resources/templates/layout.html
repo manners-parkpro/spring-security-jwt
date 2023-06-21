@@ -9,44 +9,63 @@
     <title>Admin Console</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport'/>
     <meta name="robots" content="noindex, nofollow" />
-    <!--
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-    -->
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" th:href="@{/img/favicon.ico}" />
 
-    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" />
-    <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui/jquery-ui.css" th:href="@{css/jquery-ui/jquery-ui.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/Font-Awesome/all.css" th:href="@{/css/Font-Awesome/all.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/font-awesome-min/font-awesome.min.css" th:href="@{/css/font-awesome-min/font-awesome.min.css}">
-    <link rel="stylesheet" type="text/css" href="/static/css/iCheck/all.css" th:href="@{/css/iCheck/all.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/icheck-bootstrap/icheck-bootstrap.min.css" th:href="@{/css/icheck-bootstrap/icheck-bootstrap.min.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/admin-lte/adminlte.min.css" th:href="@{/css/admin-lte/adminlte.min.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/ionicons/ionicons.min.css" th:href="@{/css/ionicons/ionicons.min.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/iCheck/skins/all.css" th:href="@{/css/iCheck/skins/all.css}">
+
 </head>
 <body class="skin-yellow sidebar-mini">
 
 <div class="wrapper">
-    <!--
     <div th:replace="/fragments/layout/top :: top"></div>
     <div th:replace="/fragments/layout/left :: left"></div>
-    -->
+
     <div class="content-wrapper">
-        <div layout:fragment="content" th:remove="tag"></div>
+        <th:block layout:fragment="content"></th:block>
+    </div>
+
+    <footer class="main-footer">
+        <strong>Copyright © 2023 <a href="javascript:;">park-pro</a>.</strong> All rights reserved.
+    </footer>
+
+    <div class="box box-warning" id="commonModal" style="width: 40%; display: none;">
+        <div class="box-header with-border">
+            <h3 class="box-title" id="commonModalTitle">Alert</h3>
+        </div>
+        <div class="box-body">
+            <div id="commonModalContent"></div>
+        </div>
+        <div class="box-footer">
+            <button type="button" class="btn btn-default pull-left commonModalClose">Close</button>
+            <button type="button" class="btn btn-primary pull-right" id="commonModalConfirm">Save</button>
+        </div>
     </div>
 </div>
 
 <!-- js -->
-<script src="/resources/static/js/jquery/jquery.min.js" th:src="@{/static/js/jquery/jquery.min.js}"></script>
-<script src="/resources/static/js/jquery-form/jquery.form.min.js" th:src="@{/static/js/jquery-form/jquery.form.min.js}"></script>
-<script src="/resources/static/modules/bootstrap/js/bootstrap.min.js" th:src="@{/static/js/bootstrap/bootstrap.min.js}"></script>
-<script src="/resources/static/js/admin-lte/adminlte.min.js" th:src="@{/static/js/admin-lte/adminlte.min.js}"></script>
-<script src="/resources/static/js/iCheck/icheck.min.js" th:src="@{/static/js/iCheck/icheck.min.js}"></script>
+<script src="/static/js/jquery/jquery.min.js" th:src="@{/js/jquery/jquery.min.js}"></script>
+<script src="/static/js/jquery-form/jquery.form.min.js" th:src="@{/js/jquery-form/jquery.form.min.js}"></script>
+<script src="/static/js/bootstrap/bootstrap.min.js" th:src="@{/js/bootstrap/bootstrap.min.js}"></script>
+<script src="/static/js/admin-lte/adminlte.min.js" th:src="@{/js/admin-lte/adminlte.min.js}"></script>
+<script src="/static/js/iCheck/icheck.min.js" th:src="@{/js/iCheck/icheck.min.js}"></script>
+<script src="/static/js/moment/moment.min.js" th:src="@{/js/moment/moment.min.js}"></script>
+<script src="/static/js/bPopup/jquery.bpopup.min.js" th:src="@{/js/bPopup/jquery.bpopup.min.js}"></script>
+
+<!-- common-js -->
+<script src="/js/common/util.js" th:src="@{/js/common/util.js}"></script>
+<script src="/js/common/modal.js" th:src="@{/js/common/modal.js}"></script>
+<script src="/js/common/multipartFile.js" th:src="@{/js/common/multipartFile.js}"></script>
+<script src="/js/common/spin.js" th:src="@{/js/common/spin.js}"></script>
 
 <script>
 
-    //var csrfToken = $("meta[name='_csrf']").attr("content");
-    //var csrfHeader = $("meta[name='_csrf_header']").attr("content");
-
     $.ajaxSetup({
-        dataType: "json",
         beforeSend: function() {
             $("body").spin("modal");
         },
@@ -61,29 +80,20 @@
         xhr.setRequestHeader(csrfHeader, csrfToken);
     });
 
-    //jQuery.i18n.properties({
-    //     name : 'message',
-    //     path : '/messages/',
-    //     mode : 'both',
-    //     language : 'en',
-    //     callback : function() {}
-    // });
-    //
-    // i18nProperty = jQuery.i18n.prop;
-
     $(function() {
-        initICheck();
+	    initICheck();
     });
 
-
     var initICheck = function() {
-        $('input[type="checkbox"], input[type="radio"]').iCheck({
-            checkboxClass: 'icheckbox_square-blue',
-            radioClass: 'iradio_flat-blue'
-        });
+	    $('input[type="checkbox"], input[type="radio"]').iCheck({
+		    checkboxClass: 'icheckbox_square-blue',
+		    radioClass: 'iradio_flat-blue'
+	    });
     };
 </script>
 <section layout:fragment="script">
 </section>
 </body>
 </html>
+
+

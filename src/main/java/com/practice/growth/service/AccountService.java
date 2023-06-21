@@ -31,7 +31,7 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     public Account findByUsername(String username) throws NotFoundException {
-        return repository.findByUsernameIgnoreCase(username).orElseThrow(() -> new UserNotFoundException(username, UserNotFoundException.USER_NOT_FOUND));
+        return repository.findByUsernameIgnoreCaseAndActiveYn(username, YNType.Y).orElseThrow(() -> new UserNotFoundException(username, UserNotFoundException.USER_NOT_FOUND));
     }
 
     public Account findByEmail(String email) throws NotFoundException {
