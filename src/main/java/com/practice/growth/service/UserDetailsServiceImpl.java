@@ -25,7 +25,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // 함수 종료 시 @AuthenticationPrincipal 애노테이션이 만들어 진다.
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.info("loadUserByUsername");
+        log.info("loadUserByUsername()");
         Account account;
 
         try {

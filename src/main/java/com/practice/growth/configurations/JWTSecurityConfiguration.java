@@ -4,6 +4,7 @@ import com.practice.growth.filter.JwtAuthenticationFilter;
 import com.practice.growth.filter.JwtAuthorizationFilter;
 import com.practice.growth.handler.JwtAccessDeniedHandler;
 import com.practice.growth.handler.JwtAuthenticationEntryPoint;
+import com.practice.growth.provider.JwtProvider;
 import com.practice.growth.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -26,11 +27,11 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
 
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAccessDeniedHandler accessDeniedHandler;
-    private final AccountRepository accountRepository;
+    private final JwtProvider jwtProvider;
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/js/**", "/css/**", "/fonts/**", "/images/**", "/favicon.*", "/*/icon-*", "/error");
+        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/js/**", "/css/**", "/fonts/**", "/img/**", "/error");
     }
 
     @Bean
@@ -42,7 +43,8 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
         // JWT 필수 Setting
         http.csrf().disable() // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
                 .formLogin().disable()
-                .httpBasic().disable(); // http basic 은 Header에 ID,PW를 들고 다닌다. ( 암호화가 안되며 탈취되기 때문에 사용 X / https 는 암호화 가능 )
+                .httpBasic().disable() // http basic 은 Header에 ID,PW를 들고 다닌다. ( 암호화가 안되며 탈취되기 때문에 사용 X / https 는 암호화 가능 )
+                .headers().frameOptions().sameOrigin();
 
         http
             .exceptionHandling()
@@ -57,9 +59,11 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
         // JWT 필수 Setting End.
 
         http.authorizeRequests()
-                .antMatchers("/api/v1/account/**").hasRole("USER")
-                .antMatchers("/api/v1/system/**").hasRole("SYSTEM")
-                .anyRequest().permitAll();
+                .antMatchers("/", "/login", "/logout", "/secure/**").permitAll()
+                .antMatchers("/user/**").hasAnyRole("USER", "SYSTEM")
+                .antMatchers("/admin/**").hasAnyRole("ADMIN", "SYSTEM")
+                .antMatchers("/system/**").hasRole("SYSTEM")
+                .anyRequest().authenticated();
 
         return http.build();
     }
@@ -72,8 +76,8 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
             AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
 
             http.addFilter(corsFilter())
-                .addFilter(new JwtAuthenticationFilter(authenticationManager))
-                .addFilter(new JwtAuthorizationFilter(authenticationManager, accountRepository));
+                .addFilter(new JwtAuthenticationFilter(authenticationManager, jwtProvider))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager, jwtProvider));
         }
     }
 }

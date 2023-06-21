@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class IndexController {
 
     public String index() {
+        // todo loginUser 확인
         return "index";
     }
 }

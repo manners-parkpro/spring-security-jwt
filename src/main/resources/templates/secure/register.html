@@ -83,7 +83,7 @@
                 </a>
             </div>
             -->
-            <a th:href="@{/secure/login}" class="text-center">I already have a membership</a>
+            <a th:href="@{/login}" class="text-center">I already have a membership</a>
         </div>
 
     </div>
@@ -109,7 +109,7 @@
         };
 
         $.ajax({
-            url : "/create-user",
+            url : "/secure/create-user",
             type : "POST",
             dataType: 'json',
             contentType: 'application/json',
@@ -117,7 +117,7 @@
         }).done(function(result) {
             console.log(result);
             if (result.code === 200)
-                location.href = 'login';
+                location.href = '/login';
             else
                 alert(result.message);
 

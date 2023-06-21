@@ -1,6 +1,7 @@
 package com.practice.growth.provider;
 
 import com.practice.growth.domain.dto.JwtTokenDto;
+import com.practice.growth.utils.JwtUtils;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -40,13 +41,13 @@ public class JwtProvider implements InitializingBean {
 
     public String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        log.debug("getToken.bearerToken : " + bearerToken);
+        log.debug("resolveToken.bearerToken() : " + bearerToken);
 
         if (StringUtils.isNotBlank(bearerToken)) {
-            if (bearerToken.startsWith("Bearer "))
-                return bearerToken;
-            else
-                return "Bearer " + bearerToken;
+            if (!bearerToken.startsWith("Bearer "))
+                bearerToken = BEARER_TYPE + bearerToken;
+
+            return bearerToken.substring(7);
         }
 
         return null;
@@ -75,6 +76,7 @@ public class JwtProvider implements InitializingBean {
         return false;
     }
 
+    // 유저 정보를 가지고 AccessToken, RefreshToken 을 생성
     public JwtTokenDto generateToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
@@ -125,7 +127,7 @@ public class JwtProvider implements InitializingBean {
                 .setSigningKey(secret)
                 .parseClaimsJws(accessToken)
                 .getBody()
-                .get("role", String.class);
+                .get(AUTHORITIES_KEY, String.class);
     }
 
     private Date getExpireDate() {
