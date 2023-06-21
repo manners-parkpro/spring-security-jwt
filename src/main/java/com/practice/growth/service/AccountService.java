@@ -35,7 +35,7 @@ public class AccountService {
     }
 
     public Account findByEmail(String email) throws NotFoundException {
-        return repository.findByEmailIgnoreCase(email).orElseThrow(() -> new UserNotFoundException(email, UserNotFoundException.USER_NOT_FOUND));
+        return repository.findByEmailIgnoreCaseAndActiveYn(email, YNType.Y).orElseThrow(() -> new UserNotFoundException(email, UserNotFoundException.USER_NOT_FOUND));
     }
 
     @Transactional
