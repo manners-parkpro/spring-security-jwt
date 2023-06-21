@@ -14,6 +14,6 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
 
     int countByUsernameIgnoreCase(String username);
     Optional<Account> findByUsernameIgnoreCaseAndActiveYn(String username, YNType ynType);
-    Optional<Account> findByEmailIgnoreCase(String email);
+    Optional<Account> findByEmailIgnoreCaseAndActiveYn(String email, YNType ynType);
     Optional<Account> findByProviderId(String providerId);
 }
