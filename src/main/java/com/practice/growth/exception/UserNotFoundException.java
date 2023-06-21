@@ -2,10 +2,6 @@ package com.practice.growth.exception;
 
 import lombok.Getter;
 
-/**
- * @author prographer
- * @date: 2019-04-09
- */
 @Getter
 public class UserNotFoundException extends NotFoundException {
     private String userName;

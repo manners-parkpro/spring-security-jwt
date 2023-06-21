@@ -1,9 +1,5 @@
 package com.practice.growth.exception;
 
-/**
- * @author prographer
- * @date: 2019-04-09
- */
 public class NotFoundException extends Exception {
     public static final int USER_NOT_FOUND = 100;
     public static final int USER_GROUP_NOT_FOUND = 200;
