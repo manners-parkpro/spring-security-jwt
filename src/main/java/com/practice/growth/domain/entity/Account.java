@@ -11,9 +11,8 @@ import org.springframework.util.CollectionUtils;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -33,8 +32,8 @@ public class Account extends BaseEntity {
     @Column(length = 50)
     private String tel;
     private String password;
-    @Column(length = 50)
-    private String roles; // 나중에는 연관관계 필요
+    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Role> roles = new HashSet<>();
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private ProviderType provider;
@@ -52,9 +51,11 @@ public class Account extends BaseEntity {
 
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
     public List<String> getRoleList() {
-        if (StringUtils.isNotBlank(this.roles))
-            return Arrays.asList(this.roles.split(","));
+        List<String> roles = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(this.roles)) {
+            this.roles.stream().forEach(r -> roles.add(r.getRoleName()));
+        }
 
-        return new ArrayList<>();
+        return roles;
     }
 }

@@ -28,12 +28,17 @@ public class SecureController {
         return "secure/login";
     }
 
-    @GetMapping("register")
+    @GetMapping("user")
+    public @ResponseBody String user() {
+        return "User";
+    }
+
+    @GetMapping("/secure/register")
     public String register() {
         return "secure/register";
     }
 
-    @PostMapping("create-user")
+    @PostMapping("/secure/create-user")
     public @ResponseBody ApiResult<Long> createUser(@RequestBody AccountDto dto) {
         ApiResult<Long> result = new ApiResult<>(ApiResult.RESULT_CODE_OK);
 

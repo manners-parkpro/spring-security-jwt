@@ -18,10 +18,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     private final UserDetailsServiceImpl userDetailsService;
     private final PasswordEncoder passwordEncoder;
 
+    // return new UsernamePasswordAuthenticationToken = Authentication
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 
-        log.info("CustomAuthenticationProvider authenticate");
+        log.info("CustomAuthenticationProvider authenticate()");
 
         String username = authentication.getName();
         String userPw = (String) authentication.getCredentials();

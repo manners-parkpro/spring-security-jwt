@@ -2,12 +2,15 @@ package com.practice.growth.service;
 
 import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.entity.Account;
+import com.practice.growth.domain.entity.Role;
 import com.practice.growth.domain.types.ProviderType;
+import com.practice.growth.domain.types.YNType;
 import com.practice.growth.exception.AlreadyEntity;
 import com.practice.growth.exception.NotFoundException;
 import com.practice.growth.exception.RequiredParamNonException;
 import com.practice.growth.exception.UserNotFoundException;
 import com.practice.growth.repository.AccountRepository;
+import com.practice.growth.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.StringUtils;
@@ -16,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.*;
 
 @Log4j2
 @Service
@@ -24,6 +27,7 @@ import java.util.Optional;
 public class AccountService {
 
     private final AccountRepository repository;
+    private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
     public Account findByUsername(String username) throws NotFoundException {
@@ -50,7 +54,7 @@ public class AccountService {
         if (StringUtils.isNotBlank(dto.getTel()))
             account.setTel(dto.getTel());
 
-        account.setRoles(StringUtils.isBlank(dto.getRoles()) ? "ROLE_USER" : dto.getRoles());
+        account.setRoles(setUserRoles(account));
         account.setProvider(dto.getProvider() == null ? ProviderType.WEB : dto.getProvider());
 
         repository.save(account);
@@ -62,5 +66,19 @@ public class AccountService {
     public void modifyAccount(Account account) {
         account.setLastLoginAt(LocalDateTime.now());
         repository.save(account);
+    }
+
+    public Set<Role> setUserRoles(Account account) {
+        Set<Role> roles = new HashSet<>();
+
+        Role role = new Role();
+        role.setRoleName("ROLE_USER");
+        role.setAccount(account);
+        role.setDescription("Account ROLE");
+        role.setSortOrder(0);
+        role.setDefaultYn(YNType.Y);
+        roles.add(role);
+
+        return roles;
     }
 }

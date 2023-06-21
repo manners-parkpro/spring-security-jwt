@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
@@ -28,7 +29,7 @@ public class AccountDto {
     private String prefixEmail;
     private String suffixEmail;
     private String password;
-    private String roles; // List로 변경해야됨
+    private List<RoleDto> roles = new ArrayList<>();
     private ProviderType provider;
     private String providerId;
     private YNType activeYn;
@@ -58,7 +59,7 @@ public class AccountDto {
         }
 
         this.tel = a.getTel();
-        this.roles = a.getRoles();
+        this.roles = a.getRoles().stream().map(RoleDto::new).collect(Collectors.toList());
         this.provider = a.getProvider();
         if (StringUtils.isNotBlank(a.getProviderId()))
             this.providerId = a.getProviderId();
