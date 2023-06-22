@@ -62,7 +62,7 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
                 .antMatchers("/", "/login", "/logout", "/secure/**").permitAll()
                 .antMatchers("/user/**").hasAnyRole("USER", "SYSTEM")
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "SYSTEM")
-                .antMatchers("/system/**").hasRole("SYSTEM")
+                .antMatchers("/system/**", "/setting/**").hasRole("SYSTEM")
                 .anyRequest().authenticated();
 
         return http.build();
