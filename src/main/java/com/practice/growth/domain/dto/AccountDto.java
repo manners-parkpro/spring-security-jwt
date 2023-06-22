@@ -29,7 +29,7 @@ public class AccountDto {
     private String prefixEmail;
     private String suffixEmail;
     private String password;
-    private List<RoleDto> roles = new ArrayList<>();
+    private List<AccountRoleDto> accountRoles = new ArrayList<>();
     private ProviderType provider;
     private String providerId;
     private YNType activeYn;
@@ -59,7 +59,7 @@ public class AccountDto {
         }
 
         this.tel = a.getTel();
-        this.roles = a.getRoles().stream().map(RoleDto::new).collect(Collectors.toList());
+        this.accountRoles = a.getAccountRoles().stream().map(AccountRoleDto::new).collect(Collectors.toList());
         this.provider = a.getProvider();
         if (StringUtils.isNotBlank(a.getProviderId()))
             this.providerId = a.getProviderId();

@@ -23,6 +23,7 @@ spring:
         format_sql: true
         use_sql: true
         hbm2ddl.auto: update
+        #hbm2ddl.auto: create
         dialect: org.hibernate.dialect.PostgreSQLDialect
         enable_lazy_load_no_trans: true
         use_sql_comments: true

@@ -1,20 +1,15 @@
-package com.practice.growth.controller;
+package com.practice.growth.controller.secure;
 
 import com.practice.growth.domain.dto.AccountDto;
 import com.practice.growth.domain.dto.ApiResult;
-import com.practice.growth.domain.dto.JwtTokenDto;
-import com.practice.growth.exception.RequiredParamNonException;
-import com.practice.growth.provider.CustomAuthenticationProvider;
-import com.practice.growth.provider.JwtProvider;
 import com.practice.growth.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Log4j2
 @Controller
@@ -22,16 +17,6 @@ import org.springframework.web.bind.annotation.*;
 public class SecureController {
 
     private final AccountService accountService;
-
-    @GetMapping("login")
-    public String login() {
-        return "secure/login";
-    }
-
-    @GetMapping("user")
-    public @ResponseBody String user() {
-        return "User";
-    }
 
     @GetMapping("/secure/register")
     public String register() {
