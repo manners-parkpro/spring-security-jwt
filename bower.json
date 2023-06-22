@@ -17,7 +17,7 @@
   "install": {
     "path": {
       "css": "src/main/resources/static/css",
-      "js": "src/main/resources/static/js"
+      "js": "src/main/resources/static/js/library"
     },
     "sources": {
       "jquery-ui": [
