@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class RoleDto {
     private String roleName;
-    private AccountDto account;
     private String description;
     /**
      * 삭제 가능 여부
@@ -23,7 +22,6 @@ public class RoleDto {
         this.roleName = r.getRoleName();
         this.description = r.getDescription();
         this.defaultYn = r.getDefaultYn();
-        this.account = new AccountDto(r.getAccount());
     }
 
     public RoleDto(String roleName) {

@@ -37,7 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         // LastLoginAt modify
-        service.modifyAccount(account);
+        service.modifyLastLoginAtByAccount(account);
 
         return new PrincipalDetails(account);
     }
