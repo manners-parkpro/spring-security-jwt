@@ -6,12 +6,12 @@ $(document).ready(function () {
 $('.menu-panel')
     .on("select_node.jstree", function (e, selector) {
         var $btnNewMenu = $('.btn-new-menu');
-        if (selector.node.parents.length <= 2) {
+        if (selector.node.parents.length <= 2)
             $btnNewMenu.attr('disabled', false);
-        } else {
+        else
             $btnNewMenu.attr('disabled', true);
-        }
 
+        var p;
         if (selector.node.children.length > 0) {
             $('.uri-pattern .pattern-panel').hide();
             $('.uri-pattern .pattern-message').show();
@@ -20,9 +20,10 @@ $('.menu-panel')
             $('.uri-pattern .pattern-message').hide();
         }
         if (selector.node.parents.length === 2) {
+            p = $('.menu-panel').jstree("get_node", selector.node.parent);
             $('#parent-id').val("#");
         } else if (selector.node.parents.length > 2) {
-            var p = $('.menu-panel').jstree("get_node", selector.node.parent);
+            p = $('.menu-panel').jstree("get_node", selector.node.parent);
             $('#parent-id').val(p.data.menu_id);
         }
         var menuId = selector.node.data.menu_id;
@@ -46,9 +47,11 @@ $('.menu-panel')
         $("#active").iCheck('check');
         $("#chkShow").iCheck('check');
         $("#pattern-single").iCheck('check');
-        $('#parent-uri').text("/")
+        $('#parent-uri').text("/");
         if (menuId === "temp") {
-            $('#parent-uri').text(p.data.uri + (p.data.uri.length > 1 ? "/" : ""));
+            console.log(p);
+            //$('#parent-uri').text(p.data.uri + (p.data.uri.length > 1 ? "/" : "")); 파악필요
+            $('#parent-uri').text("");
             return false;
         }
 

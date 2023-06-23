@@ -12,8 +12,7 @@
 			[[${twoStepName == null ? oneStepName : twoStepName}]]
 		</h1>
 		<ol class="breadcrumb">
-			<li><a href="/static"><i class="fa fa-dashboard"></i> 홈</a></li>
-			<li><a th:href="${oneStepUrl}">[[${oneStepName}]]</a></li>
+			<li><a th:href="${oneStepUrl}">[[${oneStepName}]]</a></li>&nbsp;&nbsp;
 			<th:block th:if="${twoStepName != null}">
 				<li class="active">[[${twoStepName}]]</li>
 			</th:block>

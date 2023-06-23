@@ -1,4 +1,4 @@
-package com.practice.growth.configurations;
+package com.practice.growth.configurations.component;
 
 import com.practice.growth.domain.entity.Menu;
 import com.practice.growth.domain.types.AntMatcherType;

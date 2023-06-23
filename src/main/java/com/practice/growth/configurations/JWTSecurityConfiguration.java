@@ -1,5 +1,7 @@
 package com.practice.growth.configurations;
 
+import com.practice.growth.configurations.component.GFFilterInvocationSecurityMetadataSource;
+import com.practice.growth.domain.types.MenuType;
 import com.practice.growth.filter.JwtAuthenticationFilter;
 import com.practice.growth.filter.JwtAuthorizationFilter;
 import com.practice.growth.handler.JwtAccessDeniedHandler;
@@ -16,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
@@ -28,6 +31,11 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
     private final JwtAuthenticationEntryPoint authenticationEntryPoint;
     private final JwtAccessDeniedHandler accessDeniedHandler;
     private final JwtProvider jwtProvider;
+
+    @Override
+    public FilterInvocationSecurityMetadataSource gfFilterInvocationSecurityMetadataSource() {
+        return new GFFilterInvocationSecurityMetadataSource(MenuType.AdminConsole);
+    }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -60,9 +68,8 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
 
         http.authorizeRequests()
                 .antMatchers("/", "/login", "/logout", "/secure/**").permitAll()
-                .antMatchers("/user/**").hasAnyRole("USER", "SYSTEM")
-                .antMatchers("/admin/**").hasAnyRole("ADMIN", "SYSTEM")
-                .antMatchers("/system/**", "/setting/**").hasRole("SYSTEM")
+                .antMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/system/**", "/setting/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
 
         return http.build();

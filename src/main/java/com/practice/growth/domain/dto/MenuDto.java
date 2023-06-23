@@ -68,9 +68,8 @@ public class MenuDto {
                 if (c.getDisplayYn() == YNType.N) continue;
 
                 long cnt = roles.stream().filter(r -> c.getRoles().contains(r)).count();
-                if (cnt > 0) {
+                if (cnt > 0)
                     this.children.add(new MenuDto(c, roles, checkActive));
-                }
             }
         }
     }

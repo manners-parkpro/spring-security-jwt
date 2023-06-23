@@ -32,8 +32,14 @@ public class Account extends BaseEntity {
     @Column(length = 50)
     private String tel;
     private String password;
-    @OneToMany(mappedBy = "account", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<AccountRole> accountRoles = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "ACCOUNT_ROLE",
+            joinColumns = @JoinColumn(name = "ACCOUNT_ID"),
+            inverseJoinColumns = @JoinColumn(name = "ROLE")
+    )
+    @OrderBy("sortOrder asc")
+    private Set<Role> roles = new HashSet<>();
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
     private ProviderType provider;
@@ -52,8 +58,8 @@ public class Account extends BaseEntity {
     // ENUM으로 안하고 ,로 해서 구분해서 ROLE을 입력 -> 그걸 파싱!!
     public List<String> getRoleList() {
         List<String> roles = new ArrayList<>();
-        if (!CollectionUtils.isEmpty(this.accountRoles)) {
-            this.accountRoles.stream().forEach(r -> roles.add(r.getRoleName()));
+        if (!CollectionUtils.isEmpty(this.roles)) {
+            this.roles.stream().forEach(r -> roles.add(r.getRoleName()));
         }
 
         return roles;
