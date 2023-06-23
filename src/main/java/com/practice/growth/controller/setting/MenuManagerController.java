@@ -1,6 +1,6 @@
 package com.practice.growth.controller.setting;
 
-import com.practice.growth.configurations.UrlCache;
+import com.practice.growth.configurations.component.UrlCache;
 import com.practice.growth.domain.dto.MenuDto;
 import com.practice.growth.domain.entity.Role;
 import com.practice.growth.domain.types.MenuType;
@@ -21,7 +21,7 @@ import java.util.List;
 public class MenuManagerController {
 
     private final String DEFAULT_AC_ROLE = "ROLE_ADMIN";
-    private final String DEFAULT_FE_ROLE = "ROLE_ANONYMOUS";
+    private final String DEFAULT_FE_ROLE = "ROLE_USER";
 
     private final MenuService menuService;
     private final RoleService roleService;

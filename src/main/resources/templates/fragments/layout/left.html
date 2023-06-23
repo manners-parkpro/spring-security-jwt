@@ -7,18 +7,16 @@
     </head>
     <body>
         <th:block th:fragment="left" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}">
-            <aside class="main-sidebar sidebar-dark-primary elevation-4">
-
+            <aside class="main-sidebar sidebar-dark-primary elevation-4" th:with="URL = ${#httpServletRequest.requestURI}, UrlArray = ${#strings.arraySplit(URL, '/')}" style="min-height: 100vh;">
                 <a href="index3.html" class="brand-link">
-                    <img data-cfsrc="#">
-                    <span class="brand-text font-weight-light">Admin Menus</span>
+                    <img data-cfsrc="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" data-cfstyle="opacity: .8" style="opacity: .8" src="https://adminlte.io/themes/v3/dist/img/AdminLTELogo.png">
+                    <span class="brand-text font-weight-light">AdminLTE</span>
                 </a>
 
-                <div class="sidebar">
-
+                <div class="sidebar os-host os-theme-light os-host-overflow os-host-overflow-y os-host-resize-disabled os-host-scrollbar-horizontal-hidden os-host-transition">
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img data-cfsrc="#">
+                            <img data-cfsrc="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image" src="https://adminlte.io/themes/v3/dist/img/user2-160x160.jpg">
                         </div>
                         <div class="info">
                             <a href="#" class="d-block">PARK JONG SUK</a>
@@ -38,84 +36,34 @@
 
                     <nav class="mt-2">
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-                            <li class="nav-header">EXAMPLES</li>
-                            <li class="nav-item menu-is-opening menu-open">
-                                <a href="#" class="nav-link">
-                                    <i class="nav-icon fas fa-book"></i>
-                                    <p>
-                                        Pages
-                                        <i class="fas fa-angle-left right"></i>
-                                    </p>
-                                </a>
-                                <ul class="nav nav-treeview" style="display: block;">
-                                    <li class="nav-item">
-                                        <a href="examples/invoice.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Invoice</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/profile.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Profile</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/e-commerce.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>E-commerce</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/projects.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Projects</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/project-add.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Project Add</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/project-edit.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Project Edit</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/project-detail.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Project Detail</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/contacts.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Contacts</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/faq.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>FAQ</p>
-                                        </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="examples/contact-us.html" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>Contact us</p>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                            <th:block th:if="${not #lists.isEmpty(menus)}" th:each="side : ${menus}" th:with="classValue = ${path == side.url ? 'active' : ''}">
+                                <input type="hidden" th:value="${side.url}" />
+
+                                <li class="nav-item">
+                                    <a th:href="${#lists.isEmpty(side.children) ? side.url : '#'}" class="nav-link">
+                                        <i class="nav-icon far" th:classappend="${side.iconClass}"></i>
+
+                                        <p th:if="${not #lists.isEmpty(side.children)}" th:text="${side.menuName}">
+                                            <i class="fas fa-angle-left right"></i>
+                                        </p>
+                                    </a>
+                                    <ul th:if="${not #lists.isEmpty(side.children)}" class="nav nav-treeview" style="display: none;">
+                                        <li th:each="child: ${side.children}" th:classappend="${#httpServletRequest.requestURI == child.url ? 'active' : ''}">
+                                            <input type="hidden" th:value="${child.url}" />
+                                            <a th:href="${child.url}" class="nav-link">
+                                                <i class="fa fa-circle-o"></i>
+                                                <p th:text="${child.menuName}"></p>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </th:block>
                         </ul>
                     </nav>
 
-                </div>
+                </div></div></div><div class="os-scrollbar os-scrollbar-horizontal os-scrollbar-unusable"><div class="os-scrollbar-track"><div class="os-scrollbar-handle" style="width: 100%; transform: translate(0px, 0px);"></div></div></div><div class="os-scrollbar os-scrollbar-vertical"><div class="os-scrollbar-track"><div class="os-scrollbar-handle" style="height: 52.2193%; transform: translate(0px, 0px);"></div></div></div><div class="os-scrollbar-corner"></div></div>
+
             </aside>
         </th:block>
-
     </body>
 </html>

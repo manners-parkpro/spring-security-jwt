@@ -2,6 +2,7 @@ package com.practice.growth.domain.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.practice.growth.domain.entity.Account;
+import com.practice.growth.domain.entity.Role;
 import com.practice.growth.domain.types.ProviderType;
 import com.practice.growth.domain.types.YNType;
 import lombok.Getter;
@@ -29,7 +30,7 @@ public class AccountDto {
     private String prefixEmail;
     private String suffixEmail;
     private String password;
-    private List<AccountRoleDto> accountRoles = new ArrayList<>();
+    private List<RoleDto> roles = new ArrayList<>();
     private ProviderType provider;
     private String providerId;
     private YNType activeYn;
@@ -59,7 +60,15 @@ public class AccountDto {
         }
 
         this.tel = a.getTel();
-        this.accountRoles = a.getAccountRoles().stream().map(AccountRoleDto::new).collect(Collectors.toList());
+
+        if (a.getRoles() != null) {
+            for (Role r : a.getRoles()) {
+                RoleDto rDto = new RoleDto(r);
+                if (!roles.contains(rDto))
+                    roles.add(rDto);
+            }
+        }
+
         this.provider = a.getProvider();
         if (StringUtils.isNotBlank(a.getProviderId()))
             this.providerId = a.getProviderId();
