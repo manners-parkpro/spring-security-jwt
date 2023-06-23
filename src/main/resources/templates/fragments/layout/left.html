@@ -51,7 +51,7 @@
                                         <li th:each="child: ${side.children}" th:classappend="${#httpServletRequest.requestURI == child.url ? 'active' : ''}">
                                             <input type="hidden" th:value="${child.url}" />
                                             <a th:href="${child.url}" class="nav-link">
-                                                <i class="fa fa-circle-o"></i>
+                                                <i class="fa" th:classappend="${child.iconClass}"></i>
                                                 <p th:text="${child.menuName}"></p>
                                             </a>
                                         </li>
