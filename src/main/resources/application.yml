@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: local
+    include: properties
   servlet:
     multipart:
       max-file-size: 100MB
