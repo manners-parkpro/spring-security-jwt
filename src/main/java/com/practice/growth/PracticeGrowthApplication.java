@@ -6,7 +6,13 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@SpringBootApplication
+@SpringBootApplication(
+	exclude = {
+			org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration.class,
+			org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration.class,
+			org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration.class
+	}
+)
 public class PracticeGrowthApplication {
 
 	@Bean

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:replace="/fragments/utilFragment::navigator('/board/notice/list', '게시판 관리', '공지사항')"></div>
+    <!-- Main content -->
+    <section class="content" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-outline card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            Notice
+                        </h3>
+                    </div>
+                    <br>
+                    <!-- /.card-header -->
+                    <form name="formRegister" id="formRegister" class="form-horizontal" th:with="isModify = ${dto != null}">
+                        <input type="hidden" name="id" th:value="${isModify} ? ${dto.id}">
+
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="activeYn_Y">
+                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 공개 여부
+                                    </label>
+                                    <div class="col-md-10 radio">
+                                        <label><input type="radio" name="activeYn" id="activeYn_Y" value="Y" th:checked="${!isModify or (isModify and dto.activeYn == YNType.Y)}">&nbsp;&nbsp;&nbsp;공개</label> &nbsp;
+                                        <label><input type="radio" name="activeYn" id="activeYn_N" value="N" th:checked="${isModify and dto.activeYn == YNType.N}">&nbsp;&nbsp;&nbsp;비공개</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="fixedTopYn_Y">
+                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 상단 고정 여부
+                                    </label>
+                                    <div class="col-md-10 radio">
+                                        <label><input type="radio" name="fixedTopYn" id="fixedTopYn_Y" value="Y" th:checked="${isModify and dto.fixedTopYn == YNType.Y}">&nbsp;&nbsp;&nbsp;고정</label> &nbsp;
+                                        <label><input type="radio" name="fixedTopYn" id="fixedTopYn_N" value="N" th:checked="${!isModify or (dto.fixedTopYn == YNType.N)}">&nbsp;&nbsp;&nbsp;미고정</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="title">
+                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 제목
+                                    </label>
+                                    <div class="col-md-10">
+                                        <input type="text" class="form-control" name="title" id="title" maxlength="100" placeholder="제목을 입력해주세요." th:value="${isModify} ? ${dto.title}" />
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="col-md-2 control-label" for="title">
+                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 내용
+                                    </label>
+                                    <div class="col-md-10">
+                                        <textarea class="form-control" rows="10" maxlength="2000" id="content" name="content">[[${isModify} ? ${dto.content} : '']]</textarea>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="attachFile" class="col-md-2 control-label">
+                                        첨부파일
+                                    </label>
+                                    <div class="col-md-10 fileWrapper attachment">
+                                        <button type="button" class="btn btn-default btn-sm fileUpload" id="attachFile">
+                                            <i class="fa fa-paperclip"></i> 파일 업로드
+                                        </button><br /><br />
+                                        <ul class="mailbox-attachments clearfix filePanel"></ul>
+                                    </div>
+                                </div>
+                            </div> <!-- /.row -->
+                        </div> <!-- /.card-body -->
+
+                        <div class="card-footer">
+                            <a th:href="@{/board/notice/list}" class="btn btn-default btn-sm"><i class="fa fa-list"></i> 목록</a>
+                            <div class="pull-right">
+                                <th:block th:if="${isModify}">
+                                    <button type="button" class="btn btn-danger btn-sm" id="btnDel"><i class="fa fa-minus"></i> 삭제</button>
+                                </th:block>
+                                <button type="button" class="btn btn-primary btn-sm" id="btnSave"><i class="fa fa-plus"></i> 저장</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div> <!-- /.col-->
+        </div> <!-- ./row -->
+    </section> <!-- /.content -->
+
+    <div th:replace="/fragments/utilFragment::attachment"></div>
+
+</div>
+<section layout:fragment="script">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var dto = /*[[${dto}]]*/ null;
+        /*]]>*/
+    </script>
+
+    <script>
+        var ready = () => {
+            fileLoad();
+        }
+
+        var fileLoad = () => {
+            if (dto === null || dto === "") return false;
+
+            $.each(dto.attachments, function(idx, f) {
+                if (f.fullUri === "null" || f.fullUri === null) return false;
+                var $fileWrapper = $(".attachment");
+                var $filePanel = $fileWrapper.find('.filePanel');
+
+                var tag = "<li style=\"position: relative;\" class=\"fileInfo\">";
+                    tag += "<button type=\"button\" class=\"btn btn-default btn-sm pull-right btnRemoveFile\" style=\"position: absolute; top: 5px; right: 5px;\"><i class=\"fa fa-trash-o\"></i></button>";
+                    tag += "<span class=\"mailbox-attachment-icon\"><i class=\"fa fa-file-text-o\"></i></span>";
+                    tag += "<div class=\"mailbox-attachment-info\">";
+                        tag += "<a href='/file/download?id=" + f.id  + "' class='mailbox-attachment-name'>";
+                            tag += "<i class=\"fa fa-paperclip\"></i> "+ f.orgFilename;
+                        tag += "</a>";
+                    tag += "</div>";
+                tag += "</li>";
+
+                $filePanel.append(tag);
+                $filePanel.find(".fileInfo").last().data("file_data", f);
+            });
+        }
+
+        var fileUpload = function() {
+            var $this = $(this);
+
+            documentUpload({
+                multiple: false,
+                position: 0,
+                callback: function (data) {
+                    if (data.rs_st === 0) {
+                        var fileData = data.rs_data,
+                            $fileWrapper = $this.closest('.fileWrapper'),
+                            $filePanel = $fileWrapper.find('.filePanel');
+
+                        var tag = "<li style=\"position: relative;\" class=\"fileInfo\">";
+                            tag += "<button type=\"button\" class=\"btn btn-default btn-sm pull-right btnRemoveFile\" style=\"position: absolute; top: 5px; right: 5px;\"><i class=\"fa fa-trash-o\"></i></button>";
+                            tag += "<span class=\"mailbox-attachment-icon\"><i class=\"fa fa-file-text-o\"></i></span>";
+                            tag += "<div class=\"mailbox-attachment-info\">";
+                                tag += "<a href='/attachment/download?orgFilename=" + fileData.orgFilename + "&fullPath=" + fileData.fullPath + "' class='mailbox-attachment-name'>";
+                                    tag += "<i class=\"fa fa-paperclip\"></i> "+ fileData.orgFilename;
+                                tag += "</a>";
+                            tag += "</div>";
+                        tag += "</li>";
+
+                        $filePanel.append(tag);
+                        $filePanel.find(".fileInfo").last().data("file_data", fileData);
+                    }
+                }
+            });
+        };
+
+        var fileRemove = function() {
+            var $this = $(this);
+
+            commonModal({
+                contents: "파일을 삭제하시겠습니까?",
+                submit: function() {
+                    $this.closest(".fileInfo").remove();
+                }
+            });
+        };
+
+        var isModify = function($form) {
+            if ($form.find('input[name=id]').val() === null || $form.find('input[name=id]').val() === '') return false;
+            return true;
+        };
+        var validation = function($form) {
+            if ($form.find("input[name='title']").val() === null || $form.find("input[name='title']").val() === '') {
+                oneBtnModal("제목을 입력해주세요.", function() {
+                    $form.find("input[name='title']").focus();
+                });
+
+                return false;
+            }
+
+            if ($form.find("textarea[name='content']").val() === null || $form.find("textarea[name='content']").val() === '') {
+                oneBtnModal("내용을 입력해주세요.", function() {
+                    $form.find("textarea[name='content']").focus();
+                });
+
+                return false;
+            }
+
+            return true;
+        }
+
+        var save = function() {
+            var $form = $('form[name=formRegister]');
+
+            if (!validation($form)) return false;
+
+            var files = [];
+            $form.find(".fileInfo").each(function() {
+                files.push($(this).data('file_data'));
+            });
+
+            var params = {
+                id: $form.find("input[name='id']").val(),
+                title: $form.find('input[name=title]').val(),
+                content: $form.find("textarea[name='content']").val(),
+                fixedTopYn: $form.find('input[name=fixedTopYn]:checked').val(),
+                activeYn: $form.find('input[name=activeYn]:checked').val(),
+                attachments: files
+            };
+
+            commonModal({
+                contents: "저장하시겠습니까?",
+                submit: function() {
+                    $.ajax({
+                        url: "/board/notice/ajax/save",
+                        method: "post",
+                        type: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify(params),
+                        success: function (response) {
+                            var message = isModify($form) ? '정상적으로 수정되었습니다.' : '정상적으로 저장되었습니다.';
+
+                            oneBtnModal(message, function() {
+                                location.href = '/board/notice/edit/' + response.data;
+                            });
+                        }
+                    });
+                }
+            });
+        };
+
+        $(document).ready(ready)
+            .on('click', '.fileUpload', fileUpload)
+            .on('click', '.btnRemoveFile', fileRemove)
+            .on('click', '#btnSave', save);
+    </script>
+</section>
+</body>
+</html>

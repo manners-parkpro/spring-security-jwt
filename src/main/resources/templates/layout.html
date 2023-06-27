@@ -12,6 +12,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" th:href="@{/img/favicon.ico}" />
 
     <link rel="stylesheet" type="text/css" href="/static/css/bootstrap/bootstrap.min.css" th:href="@{/css/bootstrap/bootstrap.min.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/jquery-ui/jquery-ui.css" th:href="@{/css/jquery-ui/jquery-ui.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/Font-Awesome/all.css" th:href="@{/css/Font-Awesome/all.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/font-awesome-min/font-awesome.min.css" th:href="@{/css/font-awesome-min/font-awesome.min.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/icheck-bootstrap/icheck-bootstrap.min.css" th:href="@{/css/icheck-bootstrap/icheck-bootstrap.min.css}">
@@ -19,6 +20,8 @@
     <link rel="stylesheet" type="text/css" href="/static/css/ionicons/ionicons.min.css" th:href="@{/css/ionicons/ionicons.min.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/iCheck/skins/all.css" th:href="@{/css/iCheck/skins/all.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/select2/select2.min.css" th:href="@{/css/select2/select2.min.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/summernote/summernote.css" th:href="@{/css/summernote/summernote.css}">
+    <link rel="stylesheet" type="text/css" href="/static/css/dropzone/dropzone.min.css" th:href="@{/css/dropzone/dropzone.min.css}">
     <link rel="stylesheet" type="text/css" href="/static/css/common/common.css" th:href="@{/css/common/common.css}">
 
 </head>
@@ -36,30 +39,41 @@
         <strong>Copyright © 2023 <a href="javascript:;">park-pro</a>.</strong> All rights reserved.
     </footer>
 
-    <div class="box box-warning" id="commonModal" style="width: 40%; display: none;">
-        <div class="box-header with-border">
-            <h3 class="box-title" id="commonModalTitle">Alert</h3>
-        </div>
-        <div class="box-body">
-            <div id="commonModalContent"></div>
-        </div>
-        <div class="box-footer">
-            <button type="button" class="btn btn-default pull-left commonModalClose">Close</button>
-            <button type="button" class="btn btn-primary pull-right" id="commonModalConfirm">Save</button>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal" tabindex="-1" id="commonModal">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="commonModalTitle">Modal title</h5>
+                    </div>
+                    <div class="modal-body">
+                        <div id="commonModalContent"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary pull-left commonModalClose">Close</button>
+                        <button type="button" class="btn btn-primary pull-right" id="commonModalConfirm">Save</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
 </div>
 
 <!-- js -->
 <script src="/static/js/library/jquery/jquery.min.js" th:src="@{/js/library/jquery/jquery.min.js}"></script>
+<script src="/static/js/library/jquery/jquery-ui.min.js" th:src="@{/js/library/jquery/jquery-ui.min.js}"></script>
 <script src="/static/js/library/jquery-form/jquery.form.min.js" th:src="@{/js/library/jquery-form/jquery.form.min.js}"></script>
-<script src="/static/js/library/bootstrap/bootstrap.min.js" th:src="@{/js/library/bootstrap/bootstrap.min.js}"></script>
+<script src="/static/js/library/bootstrap/bootstrap.bundle.min.js" th:src="@{/js/library/bootstrap/bootstrap.bundle.min.js}"></script>
 <script src="/static/js/library/admin-lte/adminlte.min.js" th:src="@{/js/library/admin-lte/adminlte.min.js}"></script>
 <script src="/static/js/library/fastclick/fastclick.min.js" th:src="@{/js/library/fastclick/fastclick.min.js}"></script>
 <script src="/static/js/library/select2/select2.min.js" th:src="@{/js/library/select2/select2.min.js}"></script>
 <script src="/static/js/library/iCheck/icheck.min.js" th:src="@{/js/library/iCheck/icheck.min.js}"></script>
 <script src="/static/js/library/moment/moment.min.js" th:src="@{/js/library/moment/moment.min.js}"></script>
 <script src="/static/js/library/bPopup/jquery.bpopup.min.js" th:src="@{/js/library/bPopup/jquery.bpopup.min.js}"></script>
+<script src="/static/js/library/summernote/summernote.min.js" th:src="@{/js/library/summernote/summernote.min.js}"></script>
+<script src="/static/js/library/summernote/summernote-ko-KR.js" th:src="@{/js/library/summernote/summernote-ko-KR.js}"></script>
+<script src="/static/js/library/dropzone/dropzone.min.js" th:src="@{/js/library/dropzone/dropzone.min.js}"></script>
 
 <!-- common-js -->
 <script src="/js/common/util.js" th:src="@{/js/common/util.js}"></script>
