@@ -326,3 +326,7 @@ function formatDate(createdAt) {
 	var date = new Date(createdAt);
 	return date.getFullYear() + "." + (date.getMonth() + 1 >= 10 ? date.getMonth() + 1 : '0' + (date.getMonth() + 1)) + "." + (date.getDate() >= 10 ? date.getDate() : '0' + date.getDate()) + " " + date.getHours() + ":" + date.getMinutes();
 }
+
+function isNotNullAndNotEmpty(val) {
+	return !!val?.trim();
+}

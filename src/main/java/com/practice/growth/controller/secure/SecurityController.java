@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Log4j2
 @Controller
 @RequiredArgsConstructor
-public class SecureController {
+public class SecurityController {
 
     private final AccountService accountService;
 

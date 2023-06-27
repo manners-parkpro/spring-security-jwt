@@ -5,8 +5,8 @@
  */
 
 function initialization($form) {
-	var $file = $form.find('#multipartFile'),
-		$files = $form.find('#multipartFiles');
+	var $file = $form.find('#file'),
+		$files = $form.find('#files');
 	
 	$file.val('');
 	$files.val('');
@@ -26,7 +26,7 @@ function ajaxForm($form, uploadSuccess) {
 
 function documentUpload(options) {
 	
-	var $form = $("form[name='multipartFileUpload']");
+	var $form = $("form[name='formUpload']");
 	
 	$.ajaxSetup({
 		dataType: "json",
@@ -44,12 +44,10 @@ function documentUpload(options) {
 	 * init
 	 */
 	initialization($form);
-	var	$inputFile = $form.find('#multipartFile');
-	if (options !== null && options.multiple !== undefined && options.multiple) $inputFile = $form.find('#multipartFiles');
+	var	$inputFile = $form.find('#file');
+	if (options !== null && options.multiple !== undefined && options.multiple) $inputFile = $form.find('#files');
 	if (options !== null && options.accept !== undefined) $inputFile.attr('accept', options.accept);
-	if (options !== null && options.identity !== undefined) $form.find('input[name=identity]').val(options.identity);
 	if (options !== null && options.position !== undefined) $form.find('input[name=position]').val(options.position);
-	if (options !== null && options.floor !== undefined) $form.find('input[name=floor]').val(options.floor);
 
 	var uploadSuccess = function(responseText, statusText) {
 		$("body").spin("modal");
@@ -61,9 +59,7 @@ function documentUpload(options) {
 			if (typeof(options.callback) === 'function') options.callback(data, options);
 			$file.val('');
 			$file.attr("accept", "");
-			$form.find('input[name=identity]').val('');
 			$form.find('input[name=position]').val('');
-			$form.find('input[name=floor]').val('');
 		}
 	};
 	
@@ -90,4 +86,21 @@ function documentUpload(options) {
 	 * Hidden input File Button Click.
 	 */
 	$inputFile.click();
+}
+
+function summernoteUpload(file, editor) {
+	var data = new FormData();
+	data.append("file", file);
+
+	$.ajax({
+		data : data,
+		type : "POST",
+		url : "/attachment/upload",
+		contentType : false,
+		processData : false,
+		success : function(data) {
+			//항상 업로드된 파일의 url이 있어야 한다.
+			$(editor).summernote('insertImage', data.url);
+		}
+	});
 }

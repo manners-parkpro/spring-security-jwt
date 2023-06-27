@@ -21,8 +21,7 @@
 </div>
 
 <div th:fragment="attachment">
-	<form name="frmUpload" class="hidden" enctype="multipart/form-data" method="post" action="/attachment/upload">
-		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
+	<form name="formUpload" class="hidden" enctype="multipart/form-data" method="post" action="/attachment/upload">
 		<input type="file" id="file" name="file" />
 		<input type="file" multiple="multiple" id="files" name="files[]" />
 	</form>
@@ -30,10 +29,8 @@
 
 <div th:fragment="multipartFile">
 	<form name="multipartFileUpload" class="hidden" enctype="multipart/form-data" method="post" action="/file/upload">
-		<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" >
 		<input type="file" id="multipartFile" name="file" />
 		<input type="file" multiple="multiple" id="multipartFiles" name="files[]" />
-		<input type="hidden" name="identity">
 		<input type="hidden" name="position">
 		<input type="hidden" name="floor">
 	</form>
