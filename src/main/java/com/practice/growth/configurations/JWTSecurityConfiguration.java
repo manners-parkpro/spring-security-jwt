@@ -39,7 +39,7 @@ public class JWTSecurityConfiguration extends AdminAbstractSecurityConfiguration
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/bower_components/**", "/js/**", "/css/**", "/fonts/**", "/img/**", "/error");
+        return (web) -> web.ignoring().antMatchers("/js/**", "/css/**", "/scss/**", "/fonts/**", "/img/**", "/error");
     }
 
     @Bean
