@@ -2,132 +2,128 @@
 <html lang="ko"
       xmlns:th="http://www.thymeleaf.org">
 <head>
+
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-    <title>Register</title>
+    <title>Admin - Register</title>
 
-    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" th:href="@{/img/favicon.ico}"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/Font-Awesome/all.css" th:href="@{/css/Font-Awesome/all.css}">
-    <link rel="stylesheet" type="text/css" href="/static/css/icheck-bootstrap/icheck-bootstrap.min.css" th:href="@{/css/icheck-bootstrap/icheck-bootstrap.min.css}">
-    <link rel="stylesheet" type="text/css" href="/static/css/admin-lte/adminlte.min.css" th:href="@{/css/admin-lte/adminlte.min.css}">
+    <!-- Custom fonts for this template-->
+    <link rel="stylesheet" type="text/css" href="/static/css/fontawesome-free/all.min.css" th:href="@{/css/fontawesome-free/all.min.css}">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+
+    <!-- Custom styles for this template-->
+    <link rel="stylesheet" type="text/css" href="/static/css/sb-admin/sb-admin-2.min.css" th:href="@{/css/sb-admin/sb-admin-2.min.css}">
 
 </head>
-<body class="register-page" style="min-height: 542px;">
 
-<div class="register-box">
-    <div class="card card-outline card-primary">
-        <div class="card-header text-center">
-            <a href="../../index2.html" class="h1"><b>Admin</b></a>
-        </div>
-        <div class="card-body">
-            <p class="login-box-msg">Register a new membership</p>
-            <form id="form-register">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="username" placeholder="Full name">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-user"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="email" class="form-control" name="email" placeholder="Email">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-envelope"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="password" class="form-control" name="password" placeholder="Password">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control only-number" name="tel" placeholder="Tel Number">
-                    <div class="input-group-append">
-                        <div class="input-group-text">
-                            <span class="fas fa-lock"></span>
-                        </div>
-                    </div>
-                </div>
+<body class="bg-gradient-primary">
+
+    <div class="container">
+        <div class="card o-hidden border-0 shadow-lg my-5">
+            <div class="card-body p-0">
+                <!-- Nested Row within Card Body -->
                 <div class="row">
-                    <div class="col-8">
-                        <div class="icheck-primary">
-                            <input type="checkbox" id="agreeTerms" name="terms" value="agree">
-                            <label for="agreeTerms">
-                                I agree to the <a href="#">terms</a>
-                            </label>
+                    <div class="col-lg-5 d-none d-lg-block bg-register-image"></div>
+                    <div class="col-lg-7">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                            </div>
+                            <form class="user" id="form-register">
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="text" class="form-control form-control-user" name="firstName" placeholder="First Name">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="text" class="form-control form-control-user" name="lastName" placeholder="Last Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" class="form-control form-control-user" name="password" placeholder="Password">
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <input type="email" class="form-control form-control-user" name="email" placeholder="Email Address">
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="tel" class="form-control form-control-user" name="tel" placeholder="Tel Number">
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary btn-user btn-block" id="register-user">
+                                    Register Account
+                                </button>
+                                <hr>
+                            </form>
+                            <hr>
+                            <div class="text-center">
+                                <a class="small" href="forgot-password.html">Forgot Password?</a>
+                            </div>
+                            <div class="text-center">
+                                <a th:href="@{/login}" class="small">Already have an account? Login!</a>
+                            </div>
                         </div>
                     </div>
-
-                    <div class="col-4">
-                        <button type="button" class="btn btn-primary btn-block" id="register-user">Register</button>
-                    </div>
-
                 </div>
-            </form>
-            <!--
-            <div class="social-auth-links text-center">
-                <a href="#" class="btn btn-block btn-primary">
-                    <i class="fab fa-facebook mr-2"></i>
-                    Sign up using Facebook
-                </a>
-                <a href="#" class="btn btn-block btn-danger">
-                    <i class="fab fa-google-plus mr-2"></i>
-                    Sign up using Google+
-                </a>
             </div>
-            -->
-            <a th:href="@{/login}" class="text-center">I already have a membership</a>
         </div>
-
     </div>
-</div>
 
-<script src="/static/js/common/util.js" th:src="@{/js/common/util.js}"></script>
-<script src="/static/js/library/jquery/jquery.min.js" th:src="@{/js/library/jquery/jquery.min.js}"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/js/library/vendor/jquery/jquery.min.js" th:src="@{/js/library/vendor/jquery/jquery.min.js}"></script>
+    <script src="/static/js/library/vendor/bootstrap/js/bootstrap.bundle.min.js" th:src="@{/js/library/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
 
-<script th:inline="javascript">
-    var ready = function() {
-        onlyNumberKeyEvent({className: "only-number"});
-    }
+    <!-- Core plugin JavaScript-->
+    <script src="/static/js/library/vendor/jquery-easing/jquery.easing.min.js" th:src="@{/js/library/vendor/jquery-easing/jquery.easing.min.js}"></script>
 
-    var registerUser = function(e) {
-        e.preventDefault();
-        var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
+    <!-- Custom scripts for all pages-->
+    <script src="/static/js/library/vendor/sb-admin/sb-admin-2.min.js" th:src="@{/js/library/vendor/sb-admin/sb-admin-2.min.js}"></script>
+    <script src="/static/js/common/util.js" th:src="@{/js/common/util.js}"></script>
 
-         var data = {
-            "username": $('input[name=username]').val(),
-            "email": $('input[name=email]').val(),
-            "password": $('input[name=password]').val(),
-            "tel": $('input[name=tel]').val().replaceAll(regExp, '')
-        };
+    <script th:inline="javascript">
+        var ready = function() {
+            onlyNumberKeyEvent({className: "only-number"});
+        }
 
-        $.ajax({
-            url : "/secure/create-user",
-            type : "POST",
-            dataType: 'json',
-            contentType: 'application/json',
-            data : JSON.stringify(data)
-        }).done(function(result) {
-            console.log(result);
-            if (result.code === 200)
-                location.href = '/login';
-            else
-                alert(result.message);
+        var registerUser = function(e) {
+            e.preventDefault();
+            var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g;
 
-        }).fail(function (XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
-            console.log("$.Ajax 통신 실패.");
-        }).always(function () {});
-    }
+            var firstName = $('input[name=firstName]').val().replaceAll(regExp, ''),
+                lastName = $('input[name=lastName]').val().replaceAll(regExp, '');
 
-    $(document).ready(ready)
-        .on('click', '#register-user', registerUser);
-</script>
+            var data = {
+                "username": firstName + lastName,
+                "email": $('input[name=email]').val(),
+                "password": $('input[name=password]').val(),
+                "tel": $('input[name=tel]').val().replaceAll(regExp, '')
+            };
+
+            $.ajax({
+                url : "/secure/create-user",
+                type : "POST",
+                dataType: 'json',
+                contentType: 'application/json',
+                data : JSON.stringify(data)
+            }).done(function(result) {
+                console.log(result);
+                if (result.code === 200)
+                    location.href = '/login';
+                else
+                    alert(result.message);
+
+            }).fail(function (XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                console.log("$.Ajax 통신 실패.");
+            }).always(function () {});
+        }
+
+        $(document).ready(ready)
+            .on('click', '#register-user', registerUser);
+    </script>
+
 </body>
+
 </html>
