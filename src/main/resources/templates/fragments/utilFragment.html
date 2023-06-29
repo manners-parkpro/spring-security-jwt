@@ -6,6 +6,7 @@
 </head>
 <body>
 
+<!--
 <div th:fragment="navigator(oneStepUrl, oneStepName, twoStepName)">
 	<section class="content-header">
 		<h1>
@@ -18,6 +19,16 @@
 			</th:block>
 		</ol>
 	</section>
+</div>
+-->
+<div th:fragment="navigator(oneStepUrl, oneStepName, twoStep)">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">[[${oneStepName}]]</h1>
+        <a th:href="${oneStepUrl}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-pencil fa-sm text-white-50"></i> [[${oneStepName}]]</a>
+    </div>
+
+    <p class="mb-4"><a target="_blank" href="https://datatables.net">[[${oneStepName}]] / [[${twoStep}]]</a>.</p>
 </div>
 
 <div th:fragment="attachment">
