@@ -8,90 +8,74 @@
 </head>
 <body>
 <div layout:fragment="content">
-    <div th:replace="/fragments/utilFragment::navigator('/board/notice/list', '게시판 관리', '공지사항')"></div>
-    <!-- Main content -->
-    <section class="content" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card card-outline card-info">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            Notice
-                        </h3>
-                    </div>
-                    <br>
-                    <!-- /.card-header -->
-                    <form name="formRegister" id="formRegister" class="form-horizontal" th:with="isModify = ${dto != null}">
-                        <input type="hidden" name="id" th:value="${isModify} ? ${dto.id}">
+    <div th:replace="/fragments/utilFragment::navigator('/board/notice/list', '공지사항', 'Editor')"></div>
 
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="activeYn_Y">
-                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 공개 여부
-                                    </label>
-                                    <div class="col-md-10 radio">
-                                        <label><input type="radio" name="activeYn" id="activeYn_Y" value="Y" th:checked="${!isModify or (isModify and dto.activeYn == YNType.Y)}">&nbsp;&nbsp;&nbsp;공개</label> &nbsp;
-                                        <label><input type="radio" name="activeYn" id="activeYn_N" value="N" th:checked="${isModify and dto.activeYn == YNType.N}">&nbsp;&nbsp;&nbsp;비공개</label>
-                                    </div>
-                                </div>
+    <div class="card shadow mb-4" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Editor</h6>
+        </div>
 
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="fixedTopYn_Y">
-                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 상단 고정 여부
-                                    </label>
-                                    <div class="col-md-10 radio">
-                                        <label><input type="radio" name="fixedTopYn" id="fixedTopYn_Y" value="Y" th:checked="${isModify and dto.fixedTopYn == YNType.Y}">&nbsp;&nbsp;&nbsp;고정</label> &nbsp;
-                                        <label><input type="radio" name="fixedTopYn" id="fixedTopYn_N" value="N" th:checked="${!isModify or (dto.fixedTopYn == YNType.N)}">&nbsp;&nbsp;&nbsp;미고정</label>
-                                    </div>
-                                </div>
+        <form name="formRegister" id="formRegister" class="form-horizontal" th:with="isModify = ${dto != null}">
+            <input type="hidden" name="id" th:value="${isModify} ? ${dto.id}">
+            <div class="card-body">
 
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="title">
-                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 제목
-                                    </label>
-                                    <div class="col-md-10">
-                                        <input type="text" class="form-control" name="title" id="title" maxlength="100" placeholder="제목을 입력해주세요." th:value="${isModify} ? ${dto.title}" />
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label class="col-md-2 control-label" for="title">
-                                        <i class="fa fa-certificate text-red" aria-hidden="true"></i> 내용
-                                    </label>
-                                    <div class="col-md-10">
-                                        <textarea class="form-control" rows="10" maxlength="2000" id="content" name="content">[[${isModify} ? ${dto.content} : '']]</textarea>
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="attachFile" class="col-md-2 control-label">
-                                        첨부파일
-                                    </label>
-                                    <div class="col-md-10 fileWrapper attachment">
-                                        <button type="button" class="btn btn-default btn-sm fileUpload" id="attachFile">
-                                            <i class="fa fa-paperclip"></i> 파일 업로드
-                                        </button><br /><br />
-                                        <ul class="mailbox-attachments clearfix filePanel"></ul>
-                                    </div>
-                                </div>
-                            </div> <!-- /.row -->
-                        </div> <!-- /.card-body -->
-
-                        <div class="card-footer">
-                            <a th:href="@{/board/notice/list}" class="btn btn-default btn-sm"><i class="fa fa-list"></i> 목록</a>
-                            <div class="pull-right">
-                                <th:block th:if="${isModify}">
-                                    <button type="button" class="btn btn-danger btn-sm" id="btnDel"><i class="fa fa-minus"></i> 삭제</button>
-                                </th:block>
-                                <button type="button" class="btn btn-primary btn-sm" id="btnSave"><i class="fa fa-plus"></i> 저장</button>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group clearfix">
+                            <label class="d-block" for="fixedTopYn">상단 고정 여부</label>
+                            <div class="icheck-primary d-inline">
+                                <label><input type="radio" name="fixedTopYn" id="fixedTopYn_Y" value="Y" th:checked="${isModify and dto.fixedTopYn == YNType.Y}">&nbsp;&nbsp;&nbsp;고정</label> &nbsp;
+                                <label><input type="radio" name="fixedTopYn" id="fixedTopYn_N" value="N" th:checked="${!isModify or (dto.fixedTopYn == YNType.N)}">&nbsp;&nbsp;&nbsp;미고정</label>
                             </div>
                         </div>
-                    </form>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group clearfix">
+                            <label class="d-block" for="activeYn_Y">공개 여부</label>
+                            <div class="icheck-primary d-inline">
+                                <label><input type="radio" name="activeYn" id="activeYn_Y" value="Y" th:checked="${!isModify or (isModify and dto.activeYn == YNType.Y)}">&nbsp;&nbsp;&nbsp;공개</label> &nbsp;
+                                <label><input type="radio" name="activeYn" id="activeYn_N" value="N" th:checked="${isModify and dto.activeYn == YNType.N}">&nbsp;&nbsp;&nbsp;비공개</label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div> <!-- /.col-->
-        </div> <!-- ./row -->
-    </section> <!-- /.content -->
+
+                <div class="form-group">
+                    <label>Title</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default"><i class="fa fa-pen"></i></span>
+                        </div>
+                        <input type="text" class="form-control" name="title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" th:value="${isModify} ? ${dto.title}" />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Content</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i class="fa fa-pen"></i></span>
+                        </div>
+                        <textarea class="form-control" name="content" rows="7" aria-label="Content">[[${isModify} ? ${dto.content} : '']]</textarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>File</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="input-group-fileAddon"><i class="fa fa-paperclip"></i></span>
+                        </div>
+                        <div class="custom-file fileWrapper attachment">
+                            <button type="button" class="custom-file-input fileUpload" id="attachFile" aria-describedby="input-group-fileAddon"></button>
+                            <label class="custom-file-label" for="attachFile">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div> <!-- /. card-body -->
+        </form>
+    </div>
 
     <div th:replace="/fragments/utilFragment::attachment"></div>
 
