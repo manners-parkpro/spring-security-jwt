@@ -130,7 +130,7 @@ var iCheckInit = function() {
 };
 
 function pagination(page) {
-	var $frmSearch = $("form[name='frmSearch']");
+	var $frmSearch = $("form[name='formSearch']");
 	$frmSearch.find("input[name='page']").val(page);
 	$frmSearch.submit();
 }
@@ -339,4 +339,16 @@ function drawFileTags(f) {
 			'<div class="btn-group btn-group-sm">' +
 			'<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>' +
 		'</tr>';
+}
+
+function resetSearch() {
+	var $form = $("form[name='formSearch']");
+
+	$form.find("input[name='page']").val(0);
+	$form.find("input[name='size']").val(10);
+	$form.find("input[name='searchTitle']").val('');
+	$form.find("input[name='fixedTopYn']").val('ALL');
+	$form.find("input[name='activeYn']").val('ALL');
+
+	$form.submit();
 }

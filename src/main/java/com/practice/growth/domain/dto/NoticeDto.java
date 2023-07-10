@@ -33,7 +33,6 @@ public class NoticeDto {
     public NoticeDto(Notice n, boolean setAttachment) {
         this.id = n.getId();
         this.title = n.getTitle();
-        this.content = n.getContent();
         this.updatedAt = n.getUpdatedAt();
         this.createdAt = n.getCreatedAt();
         this.writer = new AccountDto(n.getWriter());
@@ -42,6 +41,8 @@ public class NoticeDto {
         this.delYn = n.getDelYn();
 
         if (setAttachment) {
+            this.content = n.getContent();
+
             for (Attachment a : n.getAttachments()) {
                 this.attachments.add(new AttachmentDto(a));
             }

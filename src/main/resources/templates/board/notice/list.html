@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:replace="/fragments/utilFragment::navigator('/board/notice/list', '공지사항 관리', 'List')"></div>
+
+    <div class="card shadow mb-4" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">List</h6>
+        </div>
+
+        <form name="formSearch" id="formSearch" class="form-horizontal">
+            <input type="hidden" name="page" th:value="${search.page}" />
+            <input type="hidden" name="size" th:value="${search.size}" />
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="fixedTopYn_All" class="col-sm-2 control-label">고정 여부</label>
+                            <div class="col-sm-10 has-feedback radio">
+                                <label for="fixedTopYn_All"><input type="radio" name="fixedTopYn" id="fixedTopYn_All" value="ALL" th:checked="${search.fixedTopYn eq 'ALL'}">&nbsp;&nbsp;&nbsp;전체</label> &nbsp;
+                                <label for="fixedTopYn_Y"><input type="radio" name="fixedTopYn" id="fixedTopYn_Y" value="Y" th:checked="${search.fixedTopYn eq 'Y'}">&nbsp;&nbsp;&nbsp;고정</label> &nbsp;
+                                <label for="fixedTopYn_N"><input type="radio" name="fixedTopYn" id="fixedTopYn_N" value="N" th:checked="${search.fixedTopYn eq 'N'}">&nbsp;&nbsp;&nbsp;미고정</label>
+                            </div>
+                        </div> <!-- /.form-group -->
+
+                        <div class="form-group">
+                            <label for="activeYn_All" class="col-sm-2 control-label">공개 여부</label>
+                            <div class="col-sm-10 has-feedback radio">
+                                <label for="activeYn_All"><input type="radio" name="activeYn" id="activeYn_All" value="ALL" th:checked="${search.activeYn eq 'ALL'}">&nbsp;&nbsp;&nbsp;전체</label> &nbsp;
+                                <label for="activeYn_Y"><input type="radio" name="activeYn" id="activeYn_Y" value="Y" th:checked="${search.activeYn eq 'Y'}">&nbsp;&nbsp;&nbsp;공개</label> &nbsp;
+                                <label for="activeYn_N"><input type="radio" name="activeYn" id="activeYn_N" value="N" th:checked="${search.activeYn eq 'N'}">&nbsp;&nbsp;&nbsp;미공개</label>
+                            </div>
+                        </div> <!-- /.form-group -->
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">검색어</label>
+                            <div class="col-sm-10 no-left-padding">
+                                <input type="text" name="searchTitle" class="form-control" th:value="${search.searchTitle}" maxlength="80">
+                            </div>
+                        </div> <!-- /.form-group -->
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10 has-feedback">
+                                <div class="pull-right">
+                                    <button type="submit" class="btn btn-default btn-sm" id="btn-search"><i class="fas fa-search"></i> 검색</button>
+                                    <button type="button" class="btn btn-success btn-sm" id="btn-reset"><i class="fa fa-spinner"></i> 초기화</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- /.col-md-12 -->
+                </div> <!-- /.row -->
+            </div>
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box-body no-padding">
+                            <div class="table-responsive mailbox-messages">
+                                <table class="table table-hover table-striped" id="board-list">
+                                    <tbody>
+                                        <tr>
+                                            <th>
+                                                <label>
+                                                    <input type="checkbox" class="chkAll" name="checkAll" th:data-children="numbers">
+                                                </label>
+                                            </th>
+                                            <th>NO</th>
+                                            <th>제목</th>
+                                            <th>공개여부</th>
+                                            <th>등록자</th>
+                                            <th>등록일시</th>
+                                        </tr>
+
+                                        <tr th:if="${not #lists.isEmpty(pages.content)}" th:each="item, status : ${pages.content}">
+                                            <td>
+                                                <label>
+                                                    <input type="checkbox" class="checkElement" name="numbers" th:value="${item.id}">
+                                                </label>
+                                            </td>
+                                            <td th:text="${pages.totalElements - (status.count + (pages.number * pages.size)) + 1}">1</td>
+                                            <td><a href="#" th:href="@{|/board/notice/edit/${item.id}|}" th:text="${item.title}"></a></td>
+                                            <th:block>
+                                                <td th:if="${item.activeYn eq YNType.Y}">
+                                                    <span class="badge badge-success">Active</span>
+                                                </td>
+                                                <td th:if="${item.activeYn ne YNType.Y}">
+                                                    <span class="badge badge-warning">Un Active</span>
+                                                </td>
+                                            </th:block>
+                                            <td th:text="${item.writer.username}"></td>
+                                            <td th:text="${#temporals.format(item.createdAt, 'yyyy-MM-dd')}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div th:replace="/fragments/utilFragment::adminPagination(${pages})"></div>
+
+                    </div> <!-- /.col-md-12 -->
+                </div> <!-- /.row -->
+
+                <hr class="my-4">
+                <div class="d-flex justify-content-between">
+                    <button type="button" class="btn btn-danger btn-circle" id="btn-remove"><i class="fas fa-trash"></i></button>
+                    <a th:href="@{/board/notice/new}" class="btn btn-primary btn-circle"><i class="fas fa-pencil-alt"></i></a>
+                </div>
+            </div>
+        </form>
+
+    </div> <!-- /.card shadow mb-4 -->
+</div>
+
+<section layout:fragment="script">
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        var search = /*[[${search}]]*/ null;
+        /*]]>*/
+    </script>
+    <script>
+
+        var list = function(e) {
+            e.preventDefault();
+            location.href = '/board/notice/list';
+        };
+        var checkAll = function (e) {
+            e.preventDefault();
+
+            var $this = $(this),
+                childrenClass = $this.data('children'),
+                checked = $this.prop("checked");
+
+            if (checked)
+                $(":checkbox[name=" + childrenClass + "]").iCheck("check");
+            else
+                $(":checkbox[name=" + childrenClass + "]").iCheck("uncheck");
+        };
+
+        var remove = function(e) {
+            e.preventDefault();
+            var ids = [];
+
+            commonModal({
+                contents: "정말 삭제하시겠습니까?",
+                submit: function() {
+                    $('input:checkbox[name=numbers]:checked').each(function() {
+                        ids.push($(this).val());
+                    });
+
+                    var param = {ids: ids};
+
+                    $.ajax({
+                        url: "/board/notice/ajax/delete",
+                        method: "post",
+                        type: "json",
+                        contentType: "application/json",
+                        data: JSON.stringify(param),
+                        success: function () {
+                            oneBtnModal('정상적으로 삭제 되었습니다.', function() {
+                                location.reload();
+                            });
+                        }
+                    });
+                }
+            });
+        };
+
+        $(document).ready()
+            .on('click', '#btn-reset', resetSearch)
+            .on("ifToggled", '.chkAll', checkAll)
+            .on('click', '#btn-list', list)
+            .on('click', '#btn-remove', remove);
+    </script>
+</section>
