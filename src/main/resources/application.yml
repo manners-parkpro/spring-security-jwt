@@ -2,6 +2,8 @@ spring:
   profiles:
     active: local
     include: properties
+  thymeleaf:
+    cache: false
   servlet:
     multipart:
       max-file-size: 100MB

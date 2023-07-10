@@ -70,6 +70,7 @@ public class AttachmentService {
                 dto.setOrgFilename(originalFileName);
                 dto.setSavedFilename(s3FileName);
                 dto.setFullPath(fileFullPath);
+                dto.setFileSize((int) multipartFile.getSize());
                 dto.setThumbnailPath(fileFullPath);
                 dto.setFileType(fileType);
 

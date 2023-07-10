@@ -89,7 +89,6 @@ public class AttachmentController {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
 
-
         writer.print(new Gson().toJson(result));
         writer.flush();
         writer.close();
