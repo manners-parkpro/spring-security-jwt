@@ -3,31 +3,18 @@ var ready = () => {
 }
 
 var fileLoad = () => {
-    if (dto === null || dto === "") return false;
-
     $.each(dto.attachments, function(idx, f) {
         if (f.fullUri === "null" || f.fullUri === null) return false;
-        var $fileWrapper = $(".attachment");
-        var $filePanel = $fileWrapper.find('.filePanel');
+        var $fileWrapper = $('#file-wrapper'),
+            $filePanel = $fileWrapper.find('.file-body');
 
-        var tag = "<li style=\"position: relative;\" class=\"fileInfo\">";
-        tag += "<button type=\"button\" class=\"btn btn-default btn-sm pull-right btnRemoveFile\" style=\"position: absolute; top: 5px; right: 5px;\"><i class=\"fa fa-trash-o\"></i></button>";
-        tag += "<span class=\"mailbox-attachment-icon\"><i class=\"fa fa-file-text-o\"></i></span>";
-        tag += "<div class=\"mailbox-attachment-info\">";
-        tag += "<a href='/file/download?id=" + f.id  + "' class='mailbox-attachment-name'>";
-        tag += "<i class=\"fa fa-paperclip\"></i> "+ f.orgFilename;
-        tag += "</a>";
-        tag += "</div>";
-        tag += "</li>";
-
-        $filePanel.append(tag);
-        $filePanel.find(".fileInfo").last().data("file_data", f);
+        $fileWrapper.removeClass('hide');
+        $filePanel.append(drawFileTags(f));
+        $filePanel.find(".file-info").last().data("file_data", f);
     });
 }
 
 var fileUpload = function() {
-    var $this = $(this);
-
     documentUpload({
         multiple: false,
         position: 0,
@@ -37,16 +24,8 @@ var fileUpload = function() {
                     $fileWrapper = $('#file-wrapper'),
                     $filePanel = $fileWrapper.find('.file-body');
 
-                var tag = '<tr class="file-info">' +
-                        '<td>'+ fileData.orgFilename + '</td>' +
-                        '<td>'+ fileData.fileSize + ' kb</td>' +
-                        '<td class="text-right py-0 align-middle">' +
-                        '<div class="btn-group btn-group-sm">' +
-                        '<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>' +
-                    '</tr>';
-
                 $fileWrapper.removeClass('hide');
-                $filePanel.append(tag);
+                $filePanel.append(drawFileTags(fileData));
                 $filePanel.find(".file-info").last().data("file_data", fileData);
             }
         }

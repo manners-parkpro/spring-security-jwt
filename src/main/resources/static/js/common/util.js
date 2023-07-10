@@ -330,3 +330,13 @@ function formatDate(createdAt) {
 function isNotNullAndNotEmpty(val) {
 	return !!val?.trim();
 }
+
+function drawFileTags(f) {
+	return '<tr class="file-info">' +
+			'<td>'+ f.orgFilename + '</td>' +
+			'<td>'+ f.fileSize + ' kb</td>' +
+			'<td class="text-right py-0 align-middle">' +
+			'<div class="btn-group btn-group-sm">' +
+			'<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>' +
+		'</tr>';
+}
