@@ -34,33 +34,36 @@ var fileUpload = function() {
         callback: function (data) {
             if (data.rs_st === 0) {
                 var fileData = data.rs_data,
-                    $fileWrapper = $this.closest('.fileWrapper'),
-                    $filePanel = $fileWrapper.find('.filePanel');
+                    $fileWrapper = $('#file-wrapper'),
+                    $filePanel = $fileWrapper.find('.file-body');
 
-                var tag = "<li style=\"position: relative;\" class=\"fileInfo\">";
-                tag += "<button type=\"button\" class=\"btn btn-default btn-sm pull-right btnRemoveFile\" style=\"position: absolute; top: 5px; right: 5px;\"><i class=\"fa fa-trash-o\"></i></button>";
-                tag += "<span class=\"mailbox-attachment-icon\"><i class=\"fa fa-file-text-o\"></i></span>";
-                tag += "<div class=\"mailbox-attachment-info\">";
-                tag += "<a href='/attachment/download?orgFilename=" + fileData.orgFilename + "&fullPath=" + fileData.fullPath + "' class='mailbox-attachment-name'>";
-                tag += "<i class=\"fa fa-paperclip\"></i> "+ fileData.orgFilename;
-                tag += "</a>";
-                tag += "</div>";
-                tag += "</li>";
+                var tag = '<tr class="file-info">' +
+                        '<td>'+ fileData.orgFilename + '</td>' +
+                        '<td>'+ fileData.fileSize + ' kb</td>' +
+                        '<td class="text-right py-0 align-middle">' +
+                        '<div class="btn-group btn-group-sm">' +
+                        '<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>' +
+                    '</tr>';
 
+                $fileWrapper.removeClass('hide');
                 $filePanel.append(tag);
-                $filePanel.find(".fileInfo").last().data("file_data", fileData);
+                $filePanel.find(".file-info").last().data("file_data", fileData);
             }
         }
     });
 };
 
 var fileRemove = function() {
-    var $this = $(this);
+    var $this = $(this),
+        fileInfoLength = $('.file-info').length;
 
     commonModal({
         contents: "파일을 삭제하시겠습니까?",
         submit: function() {
-            $this.closest(".fileInfo").remove();
+            $this.closest(".file-info").remove();
+
+            if (fileInfoLength === 1)
+                $('#file-wrapper').addClass('hide');
         }
     });
 };
@@ -95,7 +98,7 @@ var save = function() {
     if (!validation($form)) return false;
 
     var files = [];
-    $form.find(".fileInfo").each(function() {
+    $form.find(".file-info").each(function() {
         files.push($(this).data('file_data'));
     });
 
@@ -131,5 +134,5 @@ var save = function() {
 
 $(document).ready(ready)
     .on('click', '.fileUpload', fileUpload)
-    .on('click', '.btnRemoveFile', fileRemove)
+    .on('click', '.btn-danger', fileRemove)
     .on('click', '#btnSave', save);
