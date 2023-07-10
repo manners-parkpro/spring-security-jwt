@@ -41,6 +41,7 @@ public class AttachmentDto {
         this.savedFilename = a.getSavedFilename();
         this.fullPath = a.getFullPath();
         this.thumbnailPath = a.getThumbnailPath();
+        this.fileSize = a.getFileSize();
         this.position = a.getPosition();
     }
 

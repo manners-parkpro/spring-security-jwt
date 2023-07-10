@@ -112,6 +112,7 @@ var save = function() {
 };
 
 $(document).ready(ready)
+    .on('click', '#btn-reset', resetSearch)
     .on('click', '.fileUpload', fileUpload)
     .on('click', '.btn-danger', fileRemove)
-    .on('click', '#btnSave', save);
+    .on('click', '#btn-save', save);

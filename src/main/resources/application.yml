@@ -2,6 +2,11 @@ spring:
   profiles:
     active: local
     include: properties
+  devtools:
+    restart:
+      enabled: false
+    livereload:
+      enabled: true
   thymeleaf:
     cache: false
   servlet:
@@ -36,11 +41,6 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    devtools:
-      restart:
-        enabled: false
-      livereload:
-        enabled: true
     main:
       allow-bean-definition-overriding: true
   security:
