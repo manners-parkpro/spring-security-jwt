@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+</head>
+<body>
+<div layout:fragment="content">
+    <div th:replace="/fragments/utilFragment::navigator('/setting/menu-manager/index', '설정', '메뉴관리')"></div>
+
+    <div class="card shadow mb-4" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}, isModify = ${dto != null}">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Menu</h6>
+        </div>
+
+        <form name="formMenu" id="formMenu" class="form-horizontal">
+            <input type="hidden" name="id" >
+            <div class="card-body" th:if="${not #lists.isEmpty(acMenus)}">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title">Menu Tree</h3>
+                            </div> <!-- ./card-header -->
+                            <div class="card-body p-0">
+                                <table class="table table-hover">
+                                    <tbody th:each="menu : ${acMenus}">
+                                        <tr data-widget="expandable-table" aria-expanded="true">
+                                            <td th:data-menu-id="${menu.id}" class="menu parents">
+                                                <i class="expandable-table-caret fas fa-caret-right fa-fw"></i>
+                                                [[${menu.menuName}]]
+                                            </td>
+                                        </tr>
+                                        <tr class="expandable-body" th:if="${not #lists.isEmpty(menu.children)}">
+                                            <td>
+                                                <div class="p-0">
+                                                    <table class="table table-hover">
+                                                        <tbody>
+                                                        <tr th:each="child : ${menu.children}">
+                                                            <td th:data-menu-id="${child.id}" class="menu" th:text="${child.menuName}"></td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div> <!-- /. card -->
+                    </div> <!-- /.col-3 -->
+
+                    <div class="col-9">
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="title" class="col-sm-2 control-label">Title</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="title" placeholder="Title">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group hide" id="p-title">
+                            <div class="row">
+                                <label for="title" class="col-sm-2 control-label">Parents Title</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="parents-title" placeholder="Parents Title">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="uri" class="col-sm-2 control-label">URI</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="parent-uri">/</span>
+                                        <input type="text" class="form-control" id="uri" placeholder="URI">
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group uri-pattern">
+                            <div class="row">
+                                <label class="col-sm-2 control-label">URI Pattern</label>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-5 col-lg-2 pattern-panel">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optPattern" id="pattern-single"
+                                                   value="Single" checked>
+                                            Single(/)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 col-lg-2 pattern-panel">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="optPattern" id="pattern-all" value="All">
+                                            All(/**)
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10 pattern-message" style="display: none;margin-top:8px">
+                                    하위메뉴가 있으면 URI Pattern은 Single만 가능합니다.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <label for="sortOrder" class="col-sm-2 control-label">Sort Number</label>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" id="sortOrder">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary" id="btn-register"><i class="fas fa-plus"></i> 신규</button>
+                        </div>
+                    </div> <!-- /.col-9 -->
+                </div> <!-- /.row -->
+
+                <hr class="my-4">
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/}" class="btn btn-info btn-light" id="btn-list"><i class="fas fa-home"></i> Home</a>
+                    <button type="button" class="btn btn-success" id="btn-save"><i class="fas fa-check"></i> 저장</button>
+                </div>
+            </div> <!-- /. card-body -->
+        </form>
+    </div>
+</div>
+<section layout:fragment="script">
+    <script th:inline="javascript">
+
+    </script>
+    <script src="/static/js/setting/new-menu-manager.js" th:src="@{/js/setting/new-menu-manager.js}"></script>
+</section>
+</body>
+</html>

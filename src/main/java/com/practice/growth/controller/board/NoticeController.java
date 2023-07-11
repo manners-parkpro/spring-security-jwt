@@ -3,7 +3,6 @@ package com.practice.growth.controller.board;
 import com.practice.growth.domain.dto.ApiResult;
 import com.practice.growth.domain.dto.BoardSearchDto;
 import com.practice.growth.domain.dto.NoticeDto;
-import com.practice.growth.domain.entity.Notice;
 import com.practice.growth.exception.NotFoundException;
 import com.practice.growth.service.NoticeService;
 import com.practice.growth.service.SecurityService;

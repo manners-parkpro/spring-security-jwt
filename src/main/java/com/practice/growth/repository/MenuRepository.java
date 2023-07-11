@@ -37,4 +37,6 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "and m.deleteYn='N' " +
             "and r.roleName in :roles")
     List<Menu> getTopMenu(@Param("menuType") MenuType menuType, @Param("roles") List<String> roles, Sort sort);
+
+    Menu findByMenuNameIgnoreCaseAndActiveYn(@Param("menuName") String menuName, YNType ynType);
 }

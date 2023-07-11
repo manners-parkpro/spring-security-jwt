@@ -1,7 +1,9 @@
 package com.practice.growth.service;
 
 import com.practice.growth.domain.dto.MenuDto;
+import com.practice.growth.domain.entity.Account;
 import com.practice.growth.domain.entity.Menu;
+import com.practice.growth.domain.entity.Notice;
 import com.practice.growth.domain.entity.Role;
 import com.practice.growth.domain.types.MenuType;
 import com.practice.growth.domain.types.YNType;
@@ -17,6 +19,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static com.practice.growth.domain.types.AntMatcherType.All;
+import static com.practice.growth.domain.types.AntMatcherType.Single;
 import static org.springframework.data.domain.Sort.Direction;
 import static org.springframework.data.domain.Sort.by;
 
@@ -27,7 +31,6 @@ public class MenuService {
 
     private final MenuRepository repository;
     private final RoleService roleService;
-    private final SecurityService securityService;
 
     /**
      * 메뉴 계층구조 갖고 오기
@@ -69,5 +72,39 @@ public class MenuService {
     public Menu getMenu(long menuId) throws NotFoundException {
         Optional<Menu> optMenu = Optional.of(repository.findById(menuId).orElseThrow(() -> new NotFoundException("Menu not found", NotFoundException.MENU_NOT_FOUND)));
         return optMenu.get();
+    }
+
+    public Long createOrModifyMenu(MenuDto dto, Account writer) throws NotFoundException {
+        Menu menu;
+
+        if (dto.getId() != null) {
+            Optional<Menu> optBoard = repository.findById(dto.getId());
+            if (optBoard.isEmpty())
+                throw new NotFoundException("Menu not found", NotFoundException.MENU_NOT_FOUND);
+
+            menu = optBoard.get();
+        } else
+            menu = new Menu();
+
+        assert dto.getMenuName() != null && dto.getUrl() != null;
+
+        Menu parentsMenu = null;
+        if (All.equals(dto.getAntMatcherType())) {
+            parentsMenu = repository.findByMenuNameIgnoreCaseAndActiveYn(dto.getParentsMenuName(), YNType.Y);
+            if (parentsMenu == null)
+                throw new NotFoundException("Parents Menu not found", NotFoundException.MENU_NOT_FOUND);
+        }
+
+        menu.setMenuName(dto.getMenuName());
+        menu.setMenuType(MenuType.AdminConsole);
+        menu.setUrl(dto.getUrl());
+        menu.setAntMatcherType(dto.getAntMatcherType());
+        menu.setSortOrder(dto.getSortOrder());
+        menu.setLastModifier(writer);
+        menu.setParent(parentsMenu);
+
+        repository.save(menu);
+
+        return menu.getId();
     }
 }
