@@ -2,7 +2,6 @@ package com.practice.growth.domain.entity;
 
 import com.practice.growth.domain.types.YNType;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 

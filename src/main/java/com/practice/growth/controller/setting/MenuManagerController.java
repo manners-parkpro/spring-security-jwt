@@ -9,13 +9,11 @@ import com.practice.growth.domain.types.MenuType;
 import com.practice.growth.exception.NotFoundException;
 import com.practice.growth.service.MenuService;
 import com.practice.growth.service.RoleService;
+import com.practice.growth.service.SecurityService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -29,16 +27,18 @@ public class MenuManagerController {
     private final String DEFAULT_AC_ROLE = "ROLE_ADMIN";
     private final String DEFAULT_FE_ROLE = "ROLE_USER";
 
-    private final MenuService menuService;
+    private final MenuService service;
     private final RoleService roleService;
     private final UrlCache urlCache;
 
-    @RequestMapping
-    public ModelAndView index() {
+    private final SecurityService securityService;
+
+    @GetMapping("old")
+    public ModelAndView old() {
         ModelAndView modelAndView = new ModelAndView("setting/menu-manager");
 
-        List<MenuDto> acMenus = menuService.getAllMenuHierarchy(MenuType.AdminConsole);
-        List<MenuDto> feMenus = menuService.getAllMenuHierarchy(MenuType.FrontEnd);
+        List<MenuDto> acMenus = service.getAllMenuHierarchy(MenuType.AdminConsole);
+        List<MenuDto> feMenus = service.getAllMenuHierarchy(MenuType.FrontEnd);
         List<Role> roles = roleService.roleList();
         modelAndView.addObject("acMenus", acMenus);//admin console
         modelAndView.addObject("feMenus", feMenus);//front end
@@ -47,11 +47,19 @@ public class MenuManagerController {
         return modelAndView;
     }
 
+    @RequestMapping()
+    public ModelAndView index() {
+        ModelAndView modelAndView = new ModelAndView("setting/new-menu-manager");
+        modelAndView.addObject("acMenus", service.getAllMenuHierarchy(MenuType.AdminConsole)); //admin console
+        modelAndView.addObject("roles", roleService.roleList());
+        return modelAndView;
+    }
+
     @GetMapping("ajax/menu/{id}")
     @ResponseBody
     public ApiResult<MenuDto> getAjaxMenu(@PathVariable(name = "id") Long id) {
         try {
-            Menu menu = menuService.getMenu(id);
+            Menu menu = service.getMenu(id);
             MenuDto dto = new MenuDto(menu);
             ApiResult<MenuDto> result = new ApiResult<>(ApiResult.RESULT_CODE_OK);
             result.setData(dto);
@@ -61,5 +69,21 @@ public class MenuManagerController {
             result.setMessage(e.getMessage());
             return result;
         }
+    }
+
+    @RequestMapping("ajax/menu/save")
+    @ResponseBody
+    public ApiResult<Long> save(@RequestBody MenuDto dto) throws NotFoundException {
+        ApiResult<Long> result = new ApiResult<>(ApiResult.RESULT_CODE_OK);
+
+        try {
+            Long id = service.createOrModifyMenu(dto, securityService.getLoginUser());
+            result.setData(id);
+        } catch (NotFoundException e) {
+            result.setCode(ApiResult.RESULT_CODE_NOT_FOUND);
+            result.setMessage("부모 Menu명을 다시한번 확인해주세요.");
+        }
+
+        return result;
     }
 }

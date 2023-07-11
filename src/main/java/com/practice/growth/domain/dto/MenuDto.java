@@ -22,6 +22,7 @@ public class MenuDto {
 
     private Long id;
     private String menuName;
+    private String parentsMenuName;
     private String url;
     private String iconClass;
     private YNType activeYn;

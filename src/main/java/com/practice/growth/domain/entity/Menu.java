@@ -42,7 +42,7 @@ public class Menu {
      * 사용여부
      */
     @Enumerated(EnumType.STRING)
-    @Column(length = 1, columnDefinition = "char(1) default 'N'")
+    @Column(length = 1, columnDefinition = "char(1) default 'Y'")
     private YNType activeYn;
 
     /**
