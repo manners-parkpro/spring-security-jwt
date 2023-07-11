@@ -10,7 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 @Log4j2
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/setting/admin-manager")
+@RequestMapping("/setting/admin-role-manager")
 public class AdminRoleManagerController {
 
     private final AccountService service;
