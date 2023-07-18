@@ -10,34 +10,65 @@
 <div layout:fragment="content">
     <div th:replace="/fragments/utilFragment::navigator('/setting/admin-role-manager', '권한 설정', '권한관리')"></div>
 
-    <div class="card shadow mb-4" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}, isModify = ${dto != null}">
+    <div class="card shadow mb-4" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}, AntMatcherType = ${T(com.practice.growth.domain.types.AntMatcherType)}">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Role</h6>
         </div>
 
-        <form name="formMenu" id="formMenu" class="form-horizontal">
-            <input type="hidden" name="id" >
+        <form name="formRole" id="formRole" class="form-horizontal">
+            <input type="hidden" name="roleName" >
+
             <div class="card-body" th:if="${not #lists.isEmpty(roles)}">
                 <div class="row">
-                    <div class="col-3">
-                        <div class="card">
-                            <div class="card-header">
-                                <h3 class="card-title">Role Tree</h3>
-                            </div> <!-- ./card-header -->
-                            <div class="card-body p-0">
+                    <div class="col-lg-2">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Role Tree</h6>
+                            </div>
+                            <div class="card-body">
                                 <table class="table table-hover">
                                     <tbody th:each="role : ${roles}">
-                                    <tr data-widget="expandable-table" aria-expanded="true">
-                                        <td class="roles" th:text="${role.roleName}"></td>
-                                    </tr>
+                                        <tr data-widget="expandable-table" aria-expanded="true">
+                                            <td class="roles" th:text="${role.roleName}"></td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div> <!-- /. card -->
-                    </div> <!-- /.col-3 -->
+                        </div>
+                    </div> <!-- /.col-lg-2 -->
 
-                    <div class="col-9">
-
+                    <div class="col-lg-10" th:if="${not #lists.isEmpty(allMenus)}">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Roles</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="box-body no-padding">
+                                    <div class="table-responsive mailbox-messages">
+                                        <table class="table table-hover table-striped" id="role-list">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Parents</th>
+                                                    <th colspan="7">Children</th>
+                                                </tr>
+                                                <tr th:each="menu : ${allMenus}">
+                                                    <td th:if="${menu.antMatcherType eq AntMatcherType.Single}">
+                                                        <label>
+                                                            <input type="checkbox" class="checkElement" name="parents" th:data-menu-id="${menu.id}">&nbsp;&nbsp;[[${menu.menuName}]]
+                                                        </label>
+                                                    </td>
+                                                    <td th:if="${not #lists.isEmpty(menu.children)}" th:each="child, index : ${menu.children}">
+                                                        <label>
+                                                            <input type="checkbox" class="checkElement" name="children" th:data-menu-id="${child.id}">&nbsp;&nbsp;[[${child.menuName}]]
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div> <!-- /.col-9 -->
                 </div> <!-- /.row -->
 

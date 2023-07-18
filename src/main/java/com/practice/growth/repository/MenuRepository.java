@@ -15,6 +15,7 @@ import java.util.List;
 @Repository
 public interface MenuRepository extends JpaRepository<Menu, Long> {
 
+    List<Menu> findByMenuTypeAndActiveYnAndDeleteYn(MenuType menuType, YNType activeYn, YNType deleteYn, Sort sort);
     List<Menu> findByMenuTypeAndDeleteYnAndParentIsNull(MenuType menuType, YNType deleteYn, Sort sort);
 
     /**
@@ -37,6 +38,14 @@ public interface MenuRepository extends JpaRepository<Menu, Long> {
             "and m.deleteYn='N' " +
             "and r.roleName in :roles")
     List<Menu> getTopMenu(@Param("menuType") MenuType menuType, @Param("roles") List<String> roles, Sort sort);
+
+    @Query("select distinct m From Menu m join m.roles r " +
+            "where m.menuType=:menuType and m.parent is not null " +
+            "and m.activeYn='Y' " +
+            "and m.displayYn='Y' " +
+            "and m.deleteYn='N' " +
+            "and r.roleName in :roles")
+    List<Menu> getChildrenMenu(@Param("menuType") MenuType menuType, @Param("roles") List<String> roles, Sort sort);
 
     Menu findByMenuNameIgnoreCaseAndActiveYn(@Param("menuName") String menuName, YNType ynType);
 }

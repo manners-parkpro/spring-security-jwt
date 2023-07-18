@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
 public class MenuDto {
 
     private Long id;
+    private Long[] ids;
+    private Long[] idxs; // 삭제 id가 들어온다.
     private String menuName;
     private String parentsMenuName;
     private String url;

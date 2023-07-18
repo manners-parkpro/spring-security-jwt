@@ -58,17 +58,18 @@ public class MenuManagerController {
     @GetMapping("ajax/menu/{id}")
     @ResponseBody
     public ApiResult<MenuDto> getAjaxMenu(@PathVariable(name = "id") Long id) {
+        ApiResult<MenuDto> result = new ApiResult<>(ApiResult.RESULT_CODE_OK);
+
         try {
             Menu menu = service.getMenu(id);
             MenuDto dto = new MenuDto(menu);
-            ApiResult<MenuDto> result = new ApiResult<>(ApiResult.RESULT_CODE_OK);
             result.setData(dto);
-            return result;
         } catch (NotFoundException e) {
-            ApiResult<MenuDto> result = new ApiResult<>(ApiResult.RESULT_CODE_NOT_FOUND);
+            result.setCode(ApiResult.RESULT_CODE_NOT_FOUND);
             result.setMessage(e.getMessage());
-            return result;
         }
+
+        return result;
     }
 
     @RequestMapping("ajax/menu/save")
