@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Optional;
 
 @Log4j2
 @Service
@@ -70,7 +70,7 @@ public class AccountService {
         repository.save(account);
     }
     @Transactional
-    void modifyUserRole(RoleType roleType, Account account, ModifyType modifyType) throws NotFoundException {
+    public void modifyUserRole(RoleType roleType, Account account, ModifyType modifyType) throws NotFoundException {
         Optional<Role> optRole = Optional.of(roleRepository.findById(roleType.getDesc()).orElseThrow(() -> new NotFoundException("Role not found : " + roleType, NotFoundException.ROLE_NOT_FOUND)));
         if (optRole.isEmpty())
             throw new NotFoundException("Role not found : " + roleType, NotFoundException.ROLE_NOT_FOUND);

@@ -1,10 +1,91 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ko"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
 </head>
 <body>
+<div layout:fragment="content">
+    <div th:replace="/fragments/utilFragment::navigator('/setting/admin-role-manager', '권한 설정', '권한관리')"></div>
 
+    <div class="card shadow mb-4" th:with="YNType = ${T(com.practice.growth.domain.types.YNType)}, AntMatcherType = ${T(com.practice.growth.domain.types.AntMatcherType)}">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Role</h6>
+        </div>
+
+        <form name="formRole" id="formRole" class="form-horizontal">
+            <input type="hidden" name="roleName" >
+
+            <div class="card-body" th:if="${not #lists.isEmpty(roles)}">
+                <div class="row">
+                    <div class="col-lg-2">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Role Tree</h6>
+                            </div>
+                            <div class="card-body">
+                                <table class="table table-hover">
+                                    <tbody th:each="role : ${roles}">
+                                        <tr data-widget="expandable-table" aria-expanded="true">
+                                            <td class="roles" th:text="${role.roleName}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div> <!-- /.col-lg-2 -->
+
+                    <div class="col-lg-10" th:if="${not #lists.isEmpty(allMenus)}">
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Roles</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="box-body no-padding">
+                                    <div class="table-responsive mailbox-messages">
+                                        <table class="table table-hover table-striped" id="role-list">
+                                            <tbody>
+                                                <tr>
+                                                    <th>Parents</th>
+                                                    <th colspan="7">Children</th>
+                                                </tr>
+                                                <tr th:each="menu : ${allMenus}">
+                                                    <td th:if="${menu.antMatcherType eq AntMatcherType.Single}">
+                                                        <label>
+                                                            <input type="checkbox" class="checkElement" name="parents" th:data-menu-id="${menu.id}">&nbsp;&nbsp;[[${menu.menuName}]]
+                                                        </label>
+                                                    </td>
+                                                    <td th:if="${not #lists.isEmpty(menu.children)}" th:each="child, index : ${menu.children}">
+                                                        <label>
+                                                            <input type="checkbox" class="checkElement" name="children" th:data-menu-id="${child.id}">&nbsp;&nbsp;[[${child.menuName}]]
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> <!-- /.col-9 -->
+                </div> <!-- /.row -->
+
+                <hr class="my-4">
+                <div class="d-flex justify-content-between">
+                    <a th:href="@{/}" class="btn btn-info btn-light" id="btn-list"><i class="fas fa-home"></i> Home</a>
+                    <button type="button" class="btn btn-success" id="btn-save"><i class="fas fa-check"></i> 저장</button>
+                </div>
+            </div> <!-- /. card-body -->
+        </form>
+    </div>
+</div>
+<section layout:fragment="script">
+    <script th:inline="javascript">
+
+    </script>
+    <script src="/static/js/setting/admin-role-manager.js" th:src="@{/js/setting/admin-role-manager.js}"></script>
+</section>
 </body>
 </html>
