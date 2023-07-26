@@ -5,12 +5,11 @@ var ready = () => {
 var fileLoad = () => {
     $.each(dto.attachments, function(idx, f) {
         if (f.fullUri === "null" || f.fullUri === null) return false;
-        var $fileWrapper = $('#file-wrapper'),
-            $filePanel = $fileWrapper.find('.file-body');
+        var $fileWrapper = $('#file-wrapper');
 
         $fileWrapper.removeClass('hide');
-        $filePanel.append(drawFileTags(f));
-        $filePanel.find(".file-info").last().data("file_data", f);
+        $fileWrapper.append(drawFileTags(f));
+        $fileWrapper.find(".file-info").last().data("file_data", f);
     });
 }
 
@@ -21,12 +20,11 @@ var fileUpload = function() {
         callback: function (data) {
             if (data.rs_st === 0) {
                 var fileData = data.rs_data,
-                    $fileWrapper = $('#file-wrapper'),
-                    $filePanel = $fileWrapper.find('.file-body');
+                    $fileWrapper = $('#file-wrapper');
 
                 $fileWrapper.removeClass('hide');
-                $filePanel.append(drawFileTags(fileData));
-                $filePanel.find(".file-info").last().data("file_data", fileData);
+                $fileWrapper.append(drawFileTags(fileData));
+                $fileWrapper.find(".file-info").last().data("file_data", fileData);
             }
         }
     });
@@ -114,5 +112,5 @@ var save = function() {
 $(document).ready(ready)
     .on('click', '#btn-reset', resetSearch)
     .on('click', '.fileUpload', fileUpload)
-    .on('click', '.btn-danger', fileRemove)
+    .on('click', '.btn-remove', fileRemove)
     .on('click', '#btn-save', save);

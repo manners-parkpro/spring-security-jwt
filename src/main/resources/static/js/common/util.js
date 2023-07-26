@@ -331,14 +331,35 @@ function isNotNullAndNotEmpty(val) {
 	return !!val?.trim();
 }
 
+function drawCodeTags(idx, c) {
+	var tag = '<tr class="code-info" style="cursor: pointer;">';
+			tag += '<input type="hidden" name="id" value="' + c.id + '">';
+
+			tag += '<td>' + idx + '</td>';
+			tag += '<td class="child-code" data-child-code="' + c.code + '">'+ c.code + '</td>';
+			tag += '<td class="child-value" data-child-value="' + c.value + '">'+ c.value + '</td>';
+			tag += '<td class="child-description" data-child-description="' + c.description + '">'+ c.description + '</td>';
+			if (c.activeYn === 'Y')
+				tag += '<td class="child-active active" data-child-active="Y">' + '<span class="badge badge-success">Active</span>' + '</td>';
+			else
+				tag += '<td class="child-active active" data-child-active="N">' + '<span class="badge badge-warning">Un Active</span>' + '</td>';
+		tag += '</tr>';
+
+	return tag;
+}
+
 function drawFileTags(f) {
-	return '<tr class="file-info">' +
-			'<td>'+ f.orgFilename + '</td>' +
-			'<td>'+ f.fileSize + ' kb</td>' +
-			'<td class="text-right py-0 align-middle">' +
-			'<div class="btn-group btn-group-sm">' +
-			'<button type="button" class="btn btn-danger"><i class="fas fa-trash"></i></button>' +
-		'</tr>';
+	console.log(f);
+	return '<li class="file-info">' +
+				'<span class="mailbox-attachment-icon"><i class="far fa-image"></i></span>' +
+				'<div class="mailbox-attachment-info">' +
+					'<a href="#" class="mailbox-attachment-name"><i class="fas fa-paperclip"></i> ' + f.orgFilename + '</a>' +
+					'<span class="mailbox-attachment-size clearfix mt-1">' +
+						'<span>'+ f.fileSize + ' KB</span>' +
+						'<button type="button" class="btn btn-default btn-sm float-right btn-remove"><i class="far fa-trash-alt"></i></button>' +
+					'</span>' +
+				'</div>' +
+			'</li>';
 }
 
 function resetSearch() {

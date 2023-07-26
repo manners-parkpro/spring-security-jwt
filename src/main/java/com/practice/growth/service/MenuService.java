@@ -138,6 +138,7 @@ public class MenuService {
             throw new NotFoundException("Not found", NotFoundException.MENU_NOT_FOUND);
 
         Role role = roleService.findByRoleName(dto.getRoles().get(0).getRoleName());
+        if (role == null)
 
         role.getMenus().clear();
 
