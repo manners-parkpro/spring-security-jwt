@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.growth.domain.entity.Code;
-import com.practice.growth.domain.types.ModifyType;
 import com.practice.growth.domain.types.YNType;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,10 +16,6 @@ import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_EMPTY;
 
-/**
- * @author prographer
- * @date: 10/25/19
- */
 @Getter
 @Setter
 @NoArgsConstructor
