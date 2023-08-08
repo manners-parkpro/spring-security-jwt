@@ -42,7 +42,7 @@ public class StayDto {
         this.writer = new AccountDto(s.getWriter());
         this.activeYn = s.getActiveYn();
         this.delYn = s.getDelYn();
-        this.codes = s.getCodes().stream().map(CodeDto::new).collect(Collectors.toList());
+        this.codes = s.getStayService().stream().map(CodeDto::new).collect(Collectors.toList());
         this.createdAt = s.getCreatedAt();
         this.updatedAt = s.getUpdatedAt();
 
