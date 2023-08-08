@@ -53,9 +53,9 @@ public class Stay extends BaseEntity {
     // 시설 가능한 Service
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
-            name = "STAY_CODE",
+            name = "STAY_SERVICE_CODE",
             joinColumns = @JoinColumn(name = "STAY_ID"),
-            inverseJoinColumns = @JoinColumn(name = "CODE_ID")
+            inverseJoinColumns = @JoinColumn(name = "SERVICE_CODE_ID")
     )
-    private List<Code> codes = new ArrayList<>();
+    private List<Code> stayService = new ArrayList<>();
 }
